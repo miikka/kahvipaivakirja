@@ -2,19 +2,29 @@
   (:use
    compojure.core)
   (:require
+   [endophile.core :refer [mp to-clj html-string]]
+   [endophile.hiccup :refer [to-hiccup]]
    [clojure.java.io :as io]
    [compojure.handler :as handler]
    [compojure.route :as route]
-   [hiccup.middleware :refer [wrap-base-url]]
-   [markdown.core :refer [md-to-html-string]]))
+   [hiccup.core :refer [html]]
+   [hiccup.middleware :refer [wrap-base-url]]))
 
 (defn readme []
-  "Return README.md rendered into HTML."
+  "Render README.md as HTML."
   (let [content (-> (io/resource "README.md")
                     (io/file)
                     (slurp)
-                    (md-to-html-string))]
-    content))
+                    (mp)
+                    ;; XXX(miikka) Ideally we would use to-hiccup, but
+                    ;; it does not seem to support reference links
+                    ;; ([this][kind]).
+                    (to-clj)
+                    (html-string))]
+    (html
+     [:html
+      [:head [:title "Esittelysivu - Kahvipäiväkirja"]]
+      [:body content]])))
 
 (defroutes main-routes
   (GET "/" [] (readme))

@@ -4,6 +4,7 @@
   :dependencies [[org.clojure/clojure "1.5.1"]
                  [compojure "1.1.8"]
                  [hiccup "1.0.5"]
-                 [markdown-clj "0.9.47"]]
-  :plugins [[lein-ring "0.8.11"]]
+                 [endophile "0.1.2"]]
+  :plugins [[lein-ring "0.8.11"]
+            [cider/cider-nrepl "0.8.0-SNAPSHOT"]]
   :ring {:handler kahvipaivakirja.core/app})
