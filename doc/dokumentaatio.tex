@@ -22,11 +22,38 @@ tekee kahvista hyvää tai millaisesta kahvista pidän. Siksi aion alkaa pitäm�
 kahvipäiväkirjaa, johon merkitsen, mitä kahvia olen juonut ja miltä se maistui.
 Tämän työn tavoitteena on toteuttaa web-pohjainen kahvipäiväkirja.
 
-Ohjelmointikielenä on Clojure. Clojure on moderni, dynaaminen,
-Lisp-tyylinen kieli. Clojure toimii JVM-alusta, joten Clojurella
-tehdyt web-sovelluksia on helppo ajaa esimerkiksi Tomcatilla.
+Sovelluksen tarkoituksena on antaa käyttäjän kirjata
+maistelukokemuksia. Olennaista tietoa on, mitä kahvia
+maisteltiin. Käyttäjä voi antaa kahville arvosanan ja kirjata
+vapaamuotoisia huomioita. Lisäksi sovellus tarjoaa listan parhaista
+kahveista ja kahvityypeistä.
 
-Tietokantana toimii PostgreSQL.
+\subsection{Päätoiminnallisuudet}
+
+\begin{itemize}
+\item Maistelukokemuksien kirjaaminen ja muokkaaminen.
+\item Maisteluhistorian ja top-listojen katselu.
+\item Käyttäjän ja ylläpitäjän kirjautuminen.
+\item Syötetyn datan siivoaminen ylläpitäjän toimesta.
+\end{itemize}
+
+\subsection{Toteutustekniikat}
+
+Ohjelmointikielenä on Clojure. Clojure on moderni, dynaaminen,
+Lisp-tyylinen kieli JVM-alustalle. Sovellusta ajetaan laitoksen
+users-palvelimen Tomcatin alla WAR-paketiksi käännettynä. Tietokantana
+toimii PostgreSQL.
+
+Työssä ei käytetä yhtä isoa web-sovelluskehystä, vaan kokoelmaa pieniä
+Clojure-kirjastoja, kuten Compojure-reitityskirjastoa ja
+Hiccup-mallinekirjastoa. Yhdessä kirjastot tarjoavat samankaltaisen
+ympäristön kuin Sinatra Ruby-maailmassa. Tietokantaan yhdistetään
+JDBC:n avulla, joten myös muun kuin PostgreSQL-tietokannan käyttö on
+mahdollista.
+
+Sovelluksen on tarkoitus toimia työpöytäkoneiden lisäksi iPhonen
+Safari-selaimella, jotta maistelukokemuksia on helppo kirjata
+esimerkiksi kahvilasta käsin.
 
 \section{Yleiskuvaus}
 

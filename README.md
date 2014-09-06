@@ -8,9 +8,9 @@ held in Finnish, all the documentation is in Finnish, too.
 ## Yleisiä linkkejä
 
 * Työn repositorio: https://github.com/miikka/kahvipaivakirja
-* Työn dokumentaatio: [docs/dokumentaatio.pdf][docs]
+* Työn dokumentaatio: [doc/dokumentaatio.pdf][docs]
 
-[docs]: https://github.com/miikka/kahvipaivakirja/blob/master/docs/dokumentaatio.pdf?raw=true
+[docs]: https://github.com/miikka/kahvipaivakirja/blob/master/doc/dokumentaatio.pdf?raw=true
 
 
 ## Työn aihe
