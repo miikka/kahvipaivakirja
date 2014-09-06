@@ -1,0 +1,51 @@
+\documentclass[a4paper,titlepage]{article}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[finnish]{babel}
+
+\hyphenation{kahvi-päivä-kirjaan}
+
+\title{Kahvipäiväkirja}
+\author{Miikka Koskinen \\ \url{miikka.koskinen@iki.fi}}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\section{Johdanto}
+
+Juon mielelläni hyvää kahvia. En kuitenkaan oikeastaan osaa sanoa, että mikä
+tekee kahvista hyvää tai millaisesta kahvista pidän. Siksi aion alkaa pitämään
+kahvipäiväkirjaa, johon merkitsen, mitä kahvia olen juonut ja miltä se maistui.
+Tämän työn tavoitteena on toteuttaa web-pohjainen kahvipäiväkirja.
+
+Ohjelmointikielenä on Clojure. Clojure on moderni, dynaaminen,
+Lisp-tyylinen kieli. Clojure toimii JVM-alusta, joten Clojurella
+tehdyt web-sovelluksia on helppo ajaa esimerkiksi Tomcatilla.
+
+Tietokantana toimii PostgreSQL.
+
+\section{Yleiskuvaus}
+
+Käyttäjäryhmät:
+
+\begin{description}
+    \item[Jokamies]
+        Jokamies on kuka tahansa, joka vierailee kahvipäiväkirjassa. Kaikki
+        muut käyttäjäryhmät kuuluvat myös tähän käyttäjäryhmään.
+
+    \item[Maistelija]
+        Maistelija on rekisteröity käyttäjä. Maistelija voi lisätä
+        kahvipäiväkirjaan omia maistelukokemuksiaan.
+
+    \item[Ylläpitäjä]
+        Ylläpitäjä on rekisteröity käyttäjä, joka hallinnoi käyttäjätilejä ja
+        joka pitää huolta siitä, että järjestelmään syötetty tieto on
+        laadukasta.
+\end{description}
+
+
+\end{document}
