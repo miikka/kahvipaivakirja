@@ -9,6 +9,7 @@ held in Finnish, all the documentation is in Finnish, too.
 
 * Työn repositorio: https://github.com/miikka/kahvipaivakirja
 * Työn dokumentaatio: [doc/dokumentaatio.pdf][docs]
+* ConnectionTest: http://t-miikoski.users.cs.helsinki.fi/ConnectionTest/
 
 [docs]: https://github.com/miikka/kahvipaivakirja/blob/master/doc/dokumentaatio.pdf?raw=true
 
