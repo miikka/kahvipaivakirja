@@ -4,7 +4,7 @@
    [clojure.java.io :as io]
    [endophile.core :refer [mp to-clj html-string]]
    [hiccup.core :refer [html]]
-   [hiccup.element :refer [link-to]]
+   [hiccup.element :refer [image link-to]]
    [hiccup.page :refer [html5 include-css include-js]]))
 
 (defn ^:private include-bootstrap []
@@ -43,9 +43,25 @@
         [:li (active? :front-page page) (link-to "/" "Etusivu")]]]]]
     [:div.container content]]))
 
+(defn ^:private input [id type label]
+  [:div.form-group
+   [:label {:for id} label]
+   [:input {:id id :type type :class "form-control"}]])
+
 (defn front-page []
-  (base :front-page "Etusivu"
-   [:h1 "Tervetuloa kahvipäiväkirjaan"]))
+  (base
+   :front-page "Etusivu"
+   [:div.row
+    [:div.col-md-6
+     (image {:class "img-responsive"} "/images/jaakahvi.jpg")]
+    [:div.col-md-6
+     [:div.panel.panel-default
+      [:div.panel-heading [:h3.panel-title "Kirjaudu"]]
+      [:div.panel-body
+       [:form {:role "form"}
+        (list (input "login-username" :text "Käyttäjänimi")
+              (input "login-password" :password "Salasana"))
+        [:button {:type "submit" :class "btn btn-default"} "Kirjaudu"]]]]]]))
 
 (defn readme
   "Render README.md as HTML."
