@@ -10,7 +10,8 @@
 (defn ^:private include-bootstrap []
   (list (include-css "/bootstrap/css/bootstrap.css"
                      "/bootstrap/css/bootstrap-theme.css")
-        (include-js "/bootstrap/js/bootstrap.js")))
+        (include-js "/js/jquery-2.1.1.min.js"
+                    "/bootstrap/js/bootstrap.js")))
 
 (defn ^:private active?
   [page current & attr-map]
@@ -32,7 +33,7 @@
      [:div.container-fluid
       [:div.navbar-header
        [:button {:type "button" :class "navbar-toggle collapsed"
-                 :data-toggle "navbar"}
+                 :data-toggle "collapse" :data-target "#navbar"}
         [:span.sr-only "Toggle navigation"]
         [:span.icon-bar]
         [:span.icon-bar]
