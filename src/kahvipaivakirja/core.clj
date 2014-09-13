@@ -29,6 +29,7 @@
 (defroutes main-routes
   (GET "/" [] (readme))
   (GET "/about" [] (readme))
+  (route/resources "/")
   (route/not-found "Not Found"))
 
 (def app
