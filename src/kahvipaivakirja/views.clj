@@ -62,7 +62,16 @@
        [:form {:role "form"}
         (list (input "login-username" :text "Käyttäjänimi")
               (input "login-password" :password "Salasana"))
-        [:button {:type "submit" :class "btn btn-default"} "Kirjaudu"]]]]]]))
+        [:button {:type "submit" :class "btn btn-default"} "Kirjaudu"]]]]]]
+   [:div.row
+    [:div.col-md-6
+     [:h3 "Parhaat kahvit"]
+     [:ol
+      [:li "Esmeralda (Tim Wendelboe)"]]]
+    [:div.col-md-6
+     [:h3 "Parhaat paahtimot"]
+     [:ol
+      [:li "Tim Wendelboe"]]]]))
 
 (defn readme
   "Render README.md as HTML."
