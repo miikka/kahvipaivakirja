@@ -5,6 +5,7 @@
 \usepackage[T1]{fontenc}
 \usepackage[finnish]{babel}
 \usepackage{graphicx}
+\usepackage{tabularx}
 
 \hyphenation{kahvi-päivä-kirjaan}
 
@@ -109,5 +110,76 @@ Muita käyttötapauksia: rekisteröityminen, kirjautuminen.
   kaksi käyttäjää ovat lisänneet saman kahvilaadun hieman eri
   nimellä. Ylläpitäjä käy yhdistämässä näiden tiedot.
 \end{description}
+
+\section{Järjestelmän tietosisältö}
+
+\begin{figure}[ht]
+  \caption{Käsitekaavio}
+  \label{fig:käsitekaavio}
+  \includegraphics[width=12cm]{database}
+\end{figure}
+
+\subsection{Tietokohde: Käyttäjä}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{|X|X|X|}
+\hline
+Attribuutti & Arvojoukko & Kuvailu \\
+\hline
+Käyttäjänimi     & Merkkijono & Käyttäjän nimimerkki sovelluksessa. \\
+Sähköpostiosoite & Merkkijono & Käyttäjän sähköposti osoite. Mahdollistaa kirjautumisen ja unohtuneen salasanan palauttamisen. \\
+Liittymisaika    & Ajanhetki  & Milloin käyttäjätili on luotu. \\
+Ylläpitäjyys     & Boolen arvo & Onko käyttäjällä ylläpito-oikeudet. \\
+Salasana         & Merkkijono & Salasanan bcrypt-tiiviste. \\
+\hline
+\end{tabularx}
+\end{center}
+
+\subsection{Tietokohde: Paahtimo}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{|X|X|X|}
+\hline
+Attribuutti & Arvojoukko & Kuvailu \\
+\hline
+Nimi & Merkkijono & Paahtimon nimi. \\
+\hline
+\end{tabularx}
+\end{center}
+
+Kullakin paahtimolla voi olla mielivaltainen määrä kahveja, mutta kukin kahvi voi kuulua vain yhdelle paahtimolle.
+
+\subsection{Tietokohde: Kahvi}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{|X|X|X|}
+\hline
+Attribuutti & Arvojoukko & Kuvailu \\
+\hline
+Nimi & Merkkijono & Kahvilaadun nimi. \\
+\hline
+\end{tabularx}
+\end{center}
+
+Kukin kahvi kuuluu aina täsmälleen yhdelle paahtimolle.
+
+\subsection{Tietokohde: Maistelu}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{ |X|X|X| }
+\hline
+Attribuutti & Arvojoukko & Kuvailu \\
+\hline
+Laatu & Merkkijono & Kahvin valmistustapa. \\
+Sijainti & Merkkijono & Missä kahvi on nautittu. \\
+Arvosana & Kokonaisluku, 1-5 & Yhdestä viiteen tähteä. \\
+Muistiinpanot & Merkkijono & Käyttäjän apaamuotoiset muistiinpanot maistelusta. \\
+Aikaleima & Ajanhetki & Milloin maistelukokemus on kirjattu. \\
+\hline
+\end{tabularx}
+\end{center}
+
+Kukin maistelukokemus kuuluu käyttäjälle, joka kokemuksen on
+kirjannut. Kukin maistelu liittyy aina täsmälleen yhteen kahviin.
 
 \end{document}
