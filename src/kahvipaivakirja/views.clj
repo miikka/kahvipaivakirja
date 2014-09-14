@@ -48,17 +48,17 @@
         [:li (active? :profile page) (link-to "/user/" "Oma sivu")]]]]]
     [:div.container content]]))
 
-(defn ^:private input [id type label]
+(defn ^:private input [id type label & [value]]
   [:div.form-group
    [:label {:for id} label]
-   [:input {:id id :type type :class "form-control"}]])
+   [:input {:id id :type type :class "form-control" :value value}]])
 
 (defn ^:private text-area [id type label]
   [:div.form-group
    [:label {:for id} label]
    [:textarea {:id id :class "form-control"}]])
 
-(defn ^:private select [id type label options]
+(defn ^:private select [id label options]
   [:div.form-group
    [:label {:for id} label]
    [:select {:id id :class "form-control"}
@@ -99,11 +99,11 @@
      [:h3 "Lisää maistelu"]]]
    [:form {:role "form"}
     [:div.row
-     [:div.col-md-4 (select "tasting-roastery" :text "Paahtimo" ["" "Tim Wendelboe" "Square Mile Coffee"])]
-     [:div.col-md-4 (select "tasting-coffee" :text "Kahvi" [""  "Juhla Mokka" "Tumma Presidentti"])]
+     [:div.col-md-4 (select "tasting-roastery" "Paahtimo" ["" "Tim Wendelboe" "Square Mile Coffee"])]
+     [:div.col-md-4 (select "tasting-coffee" "Kahvi" [""  "Juhla Mokka" "Tumma Presidentti"])]
      [:div.col-md-4 (input "tasting-location" :text "Sijainti")]]
     [:div.row
-     [:div.col-md-4 (select "tasting-type" :text "Laatu" ["" "Suodatin" "Cappuccino" "Espresso"])]
+     [:div.col-md-4 (select "tasting-type" "Laatu" ["" "Suodatin" "Cappuccino" "Espresso"])]
      [:div.col-md-4
       ;; XXX(miikka) JS to make this work TBD.
       [:div.form-group
@@ -113,6 +113,50 @@
     [:div.row
      [:div.col-md-12
       [:button {:type "submit" :class "btn btn-default"} "Tallenna"]]]]))
+
+(defn coffee-info-page []
+  (base
+   :coffee-info "Drop Coffee: Marimira"
+   [:div.page-header [:h1 (list (link-to "/roastery/1/" "Drop Coffee") ": Marimira")]]
+   [:div.row
+    [:div.col-md-12
+     [:p "Kahvia Marimira on maisteltu yhden kerran. Ensimmäinen kerta 13.9.2014."]]]
+   [:div.row
+    [:div.col-md-12
+     [:h3 "Maisteluhistoria"]]]
+   [:div.row
+    [:div.col-md-12
+     [:table.table.table-hover
+      [:tr
+       [:th "Päiväys"]
+       [:th "Käyttäjä"]
+       [:th "Arvosana"]]
+      [:tr
+       [:td "13.9.2014"]
+       [:td "Miikka"]
+       [:td "4"]]]]]))
+
+(defn roastery-info-page []
+  (base
+   :roastery-info "Drop Coffee"
+   [:div.page-header [:h1 "Drop Coffee"]]
+   [:div.row
+    [:div.col-md-12
+     [:p "Paahtimon Drop Coffee kahveja on maisteltu yhden kerran. Ensimmäinen kerta 13.9.2014."]]]
+    [:div.row
+     [:div.col-md-12
+      [:h3 "Kahvit"]]]
+    [:div.row
+     [:div.col-md-12
+      [:table.table.table-hover
+       [:tr
+        [:th "Kahvi"]
+        [:th "Keskiarvosana"]
+        [:th "Maisteluja"]]
+       [:tr
+        [:td (link-to "/coffee/1/" "Marimira")]
+        [:td "4"]
+        [:td "1"]]]]]))
 
 (defn coffee-ranking-page []
   (base
@@ -129,6 +173,11 @@
      [:td "Tim Wendelboe"]
      [:td "5"]
      [:td "2"]]
+    [:tr
+     [:td (link-to "/coffee/1/" "Marimira")]
+     [:td (link-to "/roastery/1/" "Drop Coffee")]
+     [:td "4"]
+     [:td "1"]]
     [:tr
      [:td "Juhla Mokka"]
      [:td "Paulig"]
@@ -163,6 +212,11 @@
    [:div.row
     [:div.col-md-12 [:h3 "Omat suosikit"]]]
    [:div.row
+    [:div.col-md-12
+     [:ol
+      [:li "Heart Coffee: Kenya Miiri"]
+      [:li "Drop Coffee: Marimira"]]]]
+   [:div.row
     [:div.col-md-12 [:h3 "Maisteluhistoria"]]]
    [:div.row
     [:div.col-md-12
@@ -174,14 +228,34 @@
        [:th "Arvosana"]]
       [:tr
        [:td "13.9.2014"]
-       [:td "Drop Coffee"]
-       [:td "Marimira"]
+       [:td (link-to "/roastery/1/" "Drop Coffee")]
+       [:td (link-to "/coffee/1/" "Marimira")]
        [:td "4"]]
       [:tr
        [:td "13.9.2014"]
        [:td "Square Mile Coffee"]
        [:td "Magdalena"]
        [:td "3"]]]]]))
+
+(defn edit-coffee-page []
+  (base
+   :edit-coffee "Muokkaa kahvia"
+   [:div.page-header [:h2 "Muokkaa kahvia Marimira"]]
+   [:form {:role "form"}
+    [:div.row
+     [:div.col-md-6 (input "coffee-name" :text "Nimi" "Marimira")]
+     [:div.col-md-6 (select "coffee-roastery" "Valitse paahtimo"
+                             ["Drop Coffee" "Tim Wendelboe" "Square Mile Coffee"])]]]
+   [:div.row
+    [:div.col-md-12 [:h2 "Yhdistä toiseen kahviin"]]]
+   [:form {:role "form"}
+    [:div.row
+     [:div.col-md-12 (select "coffee-merge-coffee" "Valitse kahvi"
+                             ["Drop Coffee / Marimira" "Square Mile Coffee / Magdalena"])]]]))
+
+(defn edit-roastery-page []
+  (base
+   :edit-roastery "Muookkaa paahtimoa"))
 
 (defn readme
   "Render README.md as HTML."

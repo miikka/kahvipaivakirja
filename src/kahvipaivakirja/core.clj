@@ -10,7 +10,10 @@
 (defroutes main-routes
   (GET "/" [] (front-page))
   (GET "/coffee/" [] (coffee-ranking-page))
+  (GET "/coffee/1/" [] (coffee-info-page))
+  (GET "/coffee/1/edit/" [] (edit-coffee-page))
   (GET "/roastery/" [] (roastery-ranking-page))
+  (GET "/roastery/1/" [] (roastery-info-page))
   (GET "/tasting/" [] (new-tasting-page))
   (GET "/user/" [] (profile-page))
   (GET "/about" [] (readme))
