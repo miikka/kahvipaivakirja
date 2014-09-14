@@ -7,7 +7,7 @@ all: docs $(WAR)
 docs:
 	cd doc && make all
 
-$(WAR): src/*/*.clj src/*/*.sql project.clj
+$(WAR): src/*/*.clj src/*/*.sql project.clj README.md
 	lein ring uberwar
 
 .PHONY: deploy
