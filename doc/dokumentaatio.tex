@@ -60,9 +60,9 @@ esimerkiksi kahvilasta käsin.
 \section{Yleiskuvaus}
 
 \begin{figure}[ht]
+  \includegraphics[width=12cm]{usecase}
   \caption{Käyttötapauskaavio}
   \label{fig:käyttötapaus}
-  \includegraphics[width=12cm]{usecase}
 \end{figure}
 
 Kuvassa \ref{fig:käyttötapaus} on esitelty sovelluksen käyttäjäryhmät
@@ -111,12 +111,16 @@ Muita käyttötapauksia: rekisteröityminen, kirjautuminen.
   nimellä. Ylläpitäjä käy yhdistämässä näiden tiedot.
 \end{description}
 
+
 \section{Järjestelmän tietosisältö}
 
+Järjestelmän tietosisältöä korkealla tasolla kuvaa käsitekaavio
+kuvassa \ref{fig:käsitekaavio}.
+
 \begin{figure}[ht]
+  \includegraphics[width=12cm]{database}
   \caption{Käsitekaavio}
   \label{fig:käsitekaavio}
-  \includegraphics[width=12cm]{database}
 \end{figure}
 
 \subsection{Tietokohde: Käyttäjä}
@@ -181,5 +185,30 @@ Luontiaika & Ajanhetki & Milloin maistelukokemus on kirjattu. \\
 
 Kukin maistelukokemus kuuluu käyttäjälle, joka kokemuksen on
 kirjannut. Kukin maistelu liittyy aina täsmälleen yhteen kahviin.
+
+
+\section{Relaatiotietokantakaavio}
+
+Sovelluksen tietokannan rakennetta kuvaa relaatiotietokantakaavio
+\ref{fig:relaatiotietokantakaavio}.
+
+\begin{figure}[ht]
+  \includegraphics[width=12cm]{relational}
+  \caption{Relaatiotietokantakaavio}
+  \label{fig:relaatiotietokantakaavio}
+\end{figure}
+
+
+\section{Käyttöliittymä}
+
+Alustava sivukartta on esitetty kuvassa \ref{fig:sivukartta}.
+
+\begin{figure}[ht]
+  \includegraphics[width=12cm]{ui/sitemap}
+  \caption{Alustava sivukartta}
+  \label{fig:sivukartta}
+\end{figure}
+
+
 
 \end{document}
