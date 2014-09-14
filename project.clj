@@ -6,7 +6,7 @@
                  [crypto-password "0.1.3"]
                  [endophile "0.1.2"]
                  [hiccup "1.0.5"]
-                 [org.postgresql/postgresql "9.3-1102-jdbc41"]
+                 [org.postgresql/postgresql "9.3-1102-jdbc4"]
                  [ring "1.3.1"]
                  [ring-server "0.3.1"]
                  [yesql "0.4.0"]]
