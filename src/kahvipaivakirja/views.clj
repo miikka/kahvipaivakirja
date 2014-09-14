@@ -166,7 +166,15 @@
         [:td "4"]
         [:td "1"]]]]]))
 
-(defn coffee-ranking-page []
+(defn ^:private coffee-link
+  [coffee & args]
+  (apply link-to (str "/coffee/" (coffee :roastery_id) "/") (coffee :name)))
+
+(defn ^:private roastery-link
+  [coffee & args]
+  (apply link-to (str "/roastery/" (coffee :roastery_id) "/") (coffee :roastery_name)))
+
+(defn coffee-ranking-page [coffees]
   (base
    :coffee-ranking "Parhaat kahvit"
    [:div.page-header [:h2 "Parhaat kahvit"]]
@@ -176,21 +184,14 @@
      [:th "Paahtimo"]
      [:th "Arvosana"]
      [:th "Arvosteluja"]]
-    [:tr
-     [:td "Hacienda la Esmeralda"]
-     [:td "Tim Wendelboe"]
-     [:td "5"]
-     [:td "2"]]
-    [:tr
-     [:td (link-to "/coffee/1/" "Marimira")]
-     [:td (link-to "/roastery/1/" "Drop Coffee")]
-     [:td "4"]
-     [:td "1"]]
-    [:tr
-     [:td "Juhla Mokka"]
-     [:td "Paulig"]
-     [:td "2.7"]
-     [:td "7"]]]))
+    (for [coffee coffees]
+      [:tr
+       [:td (coffee-link coffee)]
+       [:td (roastery-link coffee)]
+       [:td (if-let [rating (coffee :rating_avg)]
+              (format "%.2f" rating)
+              "-")]
+       [:td (coffee :rating_count)]])]))
 
 (defn roastery-ranking-page []
   (base

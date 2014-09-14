@@ -42,6 +42,18 @@ Ylläpitotoimintoihin kuuluu:
 
 ## Ohjeita sovelluskehitykseen
 
+### Tietokanta-asetukset
+
+Tietokanta-asetukset tallenetaan tiedostoon `~/.kahvipaivakirja.edn`
+[clojure.java.jdbc:n käyttämässä muodossa][db-spec]. Esimerkiksi:
+
+    {:classname "org.postgresql.Driver"
+     :subprotocol "postgresql"
+     :subname "//localhost:5432/miikka"
+     :user "miikka"}
+
+[db-spec]: http://clojure-doc.org/articles/ecosystem/java_jdbc/home.html#setting-up-a-data-source
+
 
 ### Paikallisen testipalvelimen ajaminen
 

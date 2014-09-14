@@ -1,6 +1,7 @@
 (ns kahvipaivakirja.core
   (:use
    compojure.core
+   kahvipaivakirja.model
    kahvipaivakirja.views)
   (:require
    [compojure.handler :as handler]
@@ -9,7 +10,7 @@
 
 (defroutes main-routes
   (GET "/" [] (front-page))
-  (GET "/coffee/" [] (coffee-ranking-page))
+  (GET "/coffee/" [] (coffee-ranking-page (get-coffees db-spec)))
   (GET "/coffee/1/" [] (coffee-info-page))
   (GET "/coffee/1/edit/" [] (edit-coffee-page))
   (GET "/roastery/" [] (roastery-ranking-page))
