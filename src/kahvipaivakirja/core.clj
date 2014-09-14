@@ -12,6 +12,7 @@
   (GET "/coffee/" [] (coffee-ranking-page))
   (GET "/roastery/" [] (roastery-ranking-page))
   (GET "/tasting/" [] (new-tasting-page))
+  (GET "/user/" [] (profile-page))
   (GET "/about" [] (readme))
   (route/resources "/")
   (route/not-found "Not Found"))

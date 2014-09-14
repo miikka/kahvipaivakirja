@@ -44,7 +44,8 @@
         [:li (active? :front-page page) (link-to "/" "Etusivu")]
         [:li (active? :coffee-ranking page) (link-to "/coffee/" "Parhaat kahvit")]
         [:li (active? :roastery-ranking page) (link-to "/roastery/" "Parhaat paahtimot")]
-        [:li (active? :new-tasting page) (link-to "/tasting/" "Lisää maistelu")]]]]]
+        [:li (active? :new-tasting page) (link-to "/tasting/" "Lisää maistelu")]
+        [:li (active? :profile page) (link-to "/user/" "Oma sivu")]]]]]
     [:div.container content]]))
 
 (defn ^:private input [id type label]
@@ -121,15 +122,18 @@
     [:tr
      [:th "Kahvi"]
      [:th "Paahtimo"]
-     [:th "Arvosana"]]
+     [:th "Arvosana"]
+     [:th "Arvosteluja"]]
     [:tr
      [:td "Hacienda la Esmeralda"]
      [:td "Tim Wendelboe"]
-     [:td "5"]]
+     [:td "5"]
+     [:td "2"]]
     [:tr
      [:td "Juhla Mokka"]
      [:td "Paulig"]
-     [:td "2.7"]]]))
+     [:td "2.7"]
+     [:td "7"]]]))
 
 (defn roastery-ranking-page []
   (base
@@ -151,6 +155,33 @@
       [:td "1"]
       [:td "Juhla Mokka"]
       [:td "2.7"]]]]))
+
+(defn profile-page []
+  (base
+   :profile "Käyttäjäsivu"
+   [:div.page-header [:h2 "Käyttäjäsivu"]]
+   [:div.row
+    [:div.col-md-12 [:h3 "Omat suosikit"]]]
+   [:div.row
+    [:div.col-md-12 [:h3 "Maisteluhistoria"]]]
+   [:div.row
+    [:div.col-md-12
+     [:table.table.table-hover
+      [:tr
+       [:th "Päiväys"]
+       [:th "Paahtimo"]
+       [:th "Kahvi"]
+       [:th "Arvosana"]]
+      [:tr
+       [:td "13.9.2014"]
+       [:td "Drop Coffee"]
+       [:td "Marimira"]
+       [:td "4"]]
+      [:tr
+       [:td "13.9.2014"]
+       [:td "Square Mile Coffee"]
+       [:td "Magdalena"]
+       [:td "3"]]]]]))
 
 (defn readme
   "Render README.md as HTML."
