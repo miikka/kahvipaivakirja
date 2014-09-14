@@ -11,6 +11,18 @@ held in Finnish, all the documentation is in Finnish, too.
 * Työn dokumentaatio: [doc/dokumentaatio.pdf][docs]
 * ConnectionTest: http://t-miikoski.users.cs.helsinki.fi/ConnectionTest/
 
+### HTML-demosivut
+
+* [Etusivu](http://t-miikoski.users.cs.helsinki.fi/kahvipaivakirja/)
+* [Kahvilistaus](http://t-miikoski.users.cs.helsinki.fi/kahvipaivakirja/coffee/)
+* [Paahtimolistaus](http://t-miikoski.users.cs.helsinki.fi/kahvipaivakirja/roastery/)
+* [Käyttäjän maisteluhistoria](http://t-miikoski.users.cs.helsinki.fi/kahvipaivakirja/user/)
+* [Kahvin tiedot](http://t-miikoski.users.cs.helsinki.fi/kahvipaivakirja/coffee/1/)
+* [Paahtimon tiedot](http://t-miikoski.users.cs.helsinki.fi/kahvipaivakirja/roastery/1/)
+* [Kahvin muokkaus](http://t-miikoski.users.cs.helsinki.fi/coffee/1/edit/)
+* [Paahtimon muokkaus](http://t-miikoski.users.cs.helsinki.fi/kahvipaivakirja/roastery/1/edit/)
+* [Maistelun lisäys](http://t-miikoski.users.cs.helsinki.fi/kahvipaivakirja/coffee/1/edit/)
+
 [docs]: https://github.com/miikka/kahvipaivakirja/blob/master/doc/dokumentaatio.pdf?raw=true
 
 

@@ -5,7 +5,8 @@
    [endophile.core :refer [mp to-clj html-string]]
    [hiccup.core :refer [html]]
    [hiccup.element :refer [image link-to]]
-   [hiccup.page :refer [html5 include-css include-js]]))
+   [hiccup.page :refer [html5 include-css include-js]]
+   [hiccup.util :refer [to-uri]]))
 
 (defn ^:private include-bootstrap []
   (list (include-css "/bootstrap/css/bootstrap.css"
@@ -118,7 +119,7 @@
   [:button {:type "submit" :class "btn btn-default"} text])
 
 (defn ^:private link-button [target text]
-  [:a {:href target :class "btn btn-primary" :role "button"} text])
+  [:a {:href (to-uri target) :class "btn btn-primary" :role "button"} text])
 
 (defn coffee-info-page []
   (base
@@ -127,7 +128,7 @@
    [:div.row
     [:div.col-md-12
      [:p "Kahvia Marimira on maisteltu yhden kerran. Ensimmäinen kerta 13.9.2014."]
-     (link-button "/roastery/1/edit/" "Muokkaa")]]
+     (link-button "/coffee/1/edit/" "Muokkaa")]]
    [:div.row
     [:div.col-md-12
      [:h3 "Maisteluhistoria"]]]
@@ -150,7 +151,7 @@
    [:div.row
     [:div.col-md-12
      [:p "Paahtimon Drop Coffee kahveja on maisteltu yhden kerran. Ensimmäinen kerta 13.9.2014."]
-     (link-button "/coffee/1/edit/" "Muokkaa")]]
+     (link-button "/roastery/1/edit/" "Muokkaa")]]
     [:div.row
      [:div.col-md-12
       [:h3 "Kahvit"]]]
