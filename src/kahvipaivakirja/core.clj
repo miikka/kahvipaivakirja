@@ -14,6 +14,7 @@
   (GET "/coffee/1/edit/" [] (edit-coffee-page))
   (GET "/roastery/" [] (roastery-ranking-page))
   (GET "/roastery/1/" [] (roastery-info-page))
+  (GET "/roastery/1/edit/" [] (edit-roastery-page))
   (GET "/tasting/" [] (new-tasting-page))
   (GET "/user/" [] (profile-page))
   (GET "/about" [] (readme))

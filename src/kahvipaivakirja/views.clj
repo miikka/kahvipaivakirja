@@ -114,13 +114,20 @@
      [:div.col-md-12
       [:button {:type "submit" :class "btn btn-default"} "Tallenna"]]]]))
 
+(defn ^:private submit-button [text]
+  [:button {:type "submit" :class "btn btn-default"} text])
+
+(defn ^:private link-button [target text]
+  [:a {:href target :class "btn btn-primary" :role "button"} text])
+
 (defn coffee-info-page []
   (base
    :coffee-info "Drop Coffee: Marimira"
    [:div.page-header [:h1 (list (link-to "/roastery/1/" "Drop Coffee") ": Marimira")]]
    [:div.row
     [:div.col-md-12
-     [:p "Kahvia Marimira on maisteltu yhden kerran. Ensimmäinen kerta 13.9.2014."]]]
+     [:p "Kahvia Marimira on maisteltu yhden kerran. Ensimmäinen kerta 13.9.2014."]
+     (link-button "/roastery/1/edit/" "Muokkaa")]]
    [:div.row
     [:div.col-md-12
      [:h3 "Maisteluhistoria"]]]
@@ -142,7 +149,8 @@
    [:div.page-header [:h1 "Drop Coffee"]]
    [:div.row
     [:div.col-md-12
-     [:p "Paahtimon Drop Coffee kahveja on maisteltu yhden kerran. Ensimmäinen kerta 13.9.2014."]]]
+     [:p "Paahtimon Drop Coffee kahveja on maisteltu yhden kerran. Ensimmäinen kerta 13.9.2014."]
+     (link-button "/coffee/1/edit/" "Muokkaa")]]
     [:div.row
      [:div.col-md-12
       [:h3 "Kahvit"]]]
@@ -187,23 +195,28 @@
 (defn roastery-ranking-page []
   (base
    :roastery-ranking "Parhaat paahtimot"
-   [:div.page-header [:h2 "Parhaat paahtimot"]
-    [:table.table.table-hover
-     [:tr
-      [:th "Paahtimo"]
-      [:th "Kahveja"]
-      [:th "Paras kahvi"]
-      [:th "Yhteisarvosana"]]
-     [:tr
-      [:td "Tim Wendelboe"]
-      [:td "1"]
-      [:td "Hacienda la Esmeralda"]
-      [:td "5"]]
-     [:tr
-      [:td "Paulig"]
-      [:td "1"]
-      [:td "Juhla Mokka"]
-      [:td "2.7"]]]]))
+   [:div.page-header [:h2 "Parhaat paahtimot"]]
+   [:table.table.table-hover
+    [:tr
+     [:th "Paahtimo"]
+     [:th "Kahveja"]
+     [:th "Paras kahvi"]
+     [:th "Keskiarvosana"]]
+    [:tr
+     [:td "Tim Wendelboe"]
+     [:td "1"]
+     [:td "Hacienda la Esmeralda"]
+     [:td "5"]]
+    [:tr
+     [:td (link-to "/roastery/1/" "Drop Coffee")]
+     [:td "1"]
+     [:td (link-to "/coffee/1/" "Marimira")]
+     [:td "4"]]
+    [:tr
+     [:td "Paulig"]
+     [:td "1"]
+     [:td "Juhla Mokka"]
+     [:td "2.7"]]]))
 
 (defn profile-page []
   (base
@@ -245,17 +258,31 @@
     [:div.row
      [:div.col-md-6 (input "coffee-name" :text "Nimi" "Marimira")]
      [:div.col-md-6 (select "coffee-roastery" "Valitse paahtimo"
-                             ["Drop Coffee" "Tim Wendelboe" "Square Mile Coffee"])]]]
+                             ["Drop Coffee" "Tim Wendelboe" "Square Mile Coffee"])]]
+    [:div.row [:div.col-md-12 (submit-button "Tallenna")]]]
    [:div.row
     [:div.col-md-12 [:h2 "Yhdistä toiseen kahviin"]]]
    [:form {:role "form"}
     [:div.row
      [:div.col-md-12 (select "coffee-merge-coffee" "Valitse kahvi"
-                             ["Drop Coffee / Marimira" "Square Mile Coffee / Magdalena"])]]]))
+                             ["Drop Coffee / Marimira" "Square Mile Coffee / Magdalena"])]]
+    [:div.row [:div.col-md-12 (submit-button "Yhdistä")]]]))
 
 (defn edit-roastery-page []
   (base
-   :edit-roastery "Muookkaa paahtimoa"))
+   :edit-roastery "Muookkaa paahtimoa"
+   [:div.page-header [:h2 "Muokkaa paahtimoa Drop Coffee"]]
+   [:form {:role "form"}
+    [:div.row
+     [:div.col-md-12 (input "roastery-name" :text "Nimi" "Drop Coffee")]]
+    [:div.row [:div.col-md-12 (submit-button "Tallenna")]]]
+   [:div.row
+    [:div.col-md-12 [:h2 "Yhdistä toiseen paahtimoon"]]]
+   [:form {:role "form"}
+    [:div.row
+     [:div.col-md-12 (select "roastery-merge-roastery" "Valitse paahtimo"
+                             ["Drop Coffee" "Square Mile Coffee"])]]
+    [:div.row [:div.col-md-12 (submit-button "Yhdistä")]]]))
 
 (defn readme
   "Render README.md as HTML."
