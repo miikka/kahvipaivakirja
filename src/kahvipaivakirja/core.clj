@@ -9,6 +9,8 @@
 
 (defroutes main-routes
   (GET "/" [] (front-page))
+  (GET "/coffee/" [] (coffee-ranking-page))
+  (GET "/roastery/" [] (roastery-ranking-page))
   (GET "/tasting/" [] (new-tasting-page))
   (GET "/about" [] (readme))
   (route/resources "/")
