@@ -15,6 +15,18 @@ VALUES
  current_timestamp
 );
 
+INSERT INTO users
+(username, email, password, admin, joined)
+VALUES
+(
+ 'Ylläpitäjä',
+ 'test@example.com',
+ -- The password is 'kofeiini'.
+ '$2a$11$Uf63kyWK.8Sl9FHXb4DM.udCZB9gzVeR.EC/u2yY5K6ZqSkCLIEqy',
+ true,
+ current_timestamp
+);
+
 
 -- Roasteries
 INSERT INTO roasteries (name) VALUES ('Drop Coffee');
