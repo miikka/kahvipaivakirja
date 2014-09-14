@@ -41,7 +41,8 @@
        [:a.navbar-brand {:href "#"} "Kahvipäiväkirja"]]
       [:div#navbar {:class "collapse navbar-collapse"}
        [:ul.nav.navbar-nav
-        [:li (active? :front-page page) (link-to "/" "Etusivu")]]]]]
+        [:li (active? :front-page page) (link-to "/" "Etusivu")]
+        [:li (active? :new-tasting page) (link-to "/tasting/" "Lisää maistelu")]]]]]
     [:div.container content]]))
 
 (defn ^:private input [id type label]
@@ -72,6 +73,24 @@
      [:h3 "Parhaat paahtimot"]
      [:ol
       [:li "Tim Wendelboe"]]]]))
+
+(defn new-tasting-page []
+  (base
+   :new-tasting "Lisää maistelu"
+   [:div.row
+    [:div.col-md-12
+     [:h3 "Lisää maistelu"]]]
+   [:form {:role "form"}
+    [:div.row
+     [:div.col-md-4 (input "tasting-roastery" :text "Paahtimo")]
+     [:div.col-md-4 (input "tasting-coffee" :text "Kahvi")]
+     [:div.col-md-4 (input "tasting-location" :text "Sijainti")]]
+    [:div.row
+     [:div.col-md-6 (input "tasting-type" :text "Laatu")]
+     [:div.col-md-6 (input "tasting-rating" :text "Arvio")]]
+    [:div.row
+     [:div.col-md-12
+      [:button {:type "submit" :class "btn btn-default"} "Tallenna"]]]]))
 
 (defn readme
   "Render README.md as HTML."

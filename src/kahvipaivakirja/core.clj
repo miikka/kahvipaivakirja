@@ -9,6 +9,7 @@
 
 (defroutes main-routes
   (GET "/" [] (front-page))
+  (GET "/tasting/" [] (new-tasting-page))
   (GET "/about" [] (readme))
   (route/resources "/")
   (route/not-found "Not Found"))
