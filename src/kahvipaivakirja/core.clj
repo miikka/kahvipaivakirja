@@ -9,7 +9,13 @@
    [cemerick.friend.workflows :as workflows]
    [compojure.handler :as handler]
    [compojure.route :as route]
-   [hiccup.middleware :refer [wrap-base-url]]))
+   [hiccup.middleware :refer [wrap-base-url]]
+   [ring.util.response :as response]))
+
+(defn current-user
+  "Return the username of the currently authenticated user."
+  [req]
+  (-> req friend/identity :current))
 
 (defroutes main-routes
   (GET "/" [] (front-page))
@@ -20,7 +26,8 @@
   (GET "/roastery/:id/" [id] (roastery-info-page))
   (GET "/roastery/:id/edit/" [id] (edit-roastery-page))
   (GET "/tasting/" [] (new-tasting-page))
-  (GET "/user/" [] (friend/authenticated (profile-page)))
+  (GET "/user/" req (friend/authenticated (profile-page (current-user req))))
+  (GET "/logout/" req (friend/logout* (response/redirect (str (:context req) "/"))))
   (GET "/about" [] (readme))
   (route/resources "/")
   (route/not-found "Not Found"))

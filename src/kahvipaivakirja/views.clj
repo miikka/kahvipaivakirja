@@ -46,7 +46,8 @@
         [:li (active? :coffee-ranking page) (link-to "/coffee/" "Parhaat kahvit")]
         [:li (active? :roastery-ranking page) (link-to "/roastery/" "Parhaat paahtimot")]
         [:li (active? :new-tasting page) (link-to "/tasting/" "Lisää maistelu")]
-        [:li (active? :profile page) (link-to "/user/" "Oma sivu")]]]]]
+        [:li (active? :profile page) (link-to "/user/" "Oma sivu")]
+        [:li (link-to "/logout/" "Kirjaudu ulos")]]]]]
     [:div.container content]]))
 
 (defn ^:private input [id type label & [value]]
@@ -223,10 +224,10 @@
      [:td "Juhla Mokka"]
      [:td "2.7"]]]))
 
-(defn profile-page []
+(defn profile-page [username]
   (base
    :profile "Käyttäjäsivu"
-   [:div.page-header [:h2 "Käyttäjäsivu"]]
+   [:div.page-header [:h2 "Käyttäjä: " username]]
    [:div.row
     [:div.col-md-12 [:h3 "Omat suosikit"]]]
    [:div.row
