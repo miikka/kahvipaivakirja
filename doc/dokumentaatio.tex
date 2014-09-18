@@ -199,6 +199,24 @@ Sovelluksen tietokannan rakennetta kuvaa relaatiotietokantakaavio
 \end{figure}
 
 
+\section{Järjestelmän yleisrakenne}
+
+Sovellus pyrkii noudattamaan MVC-mallia. Vaikka Clojure tukeekin
+olio-ohjelmointia, se ei kannusta siihen. Niinpä luokkien sijaan yhteen
+kokonaisuuteen kuuluvat funktiot on koottu nimiavaruksiin. MVC-malli ilmenee
+seuraavasti:
+
+\begin{itemize}
+    \item Näkymät on sijaitsevat kahvipaivakirja.views-nimiavaruudessa. Ne on
+        toteutettu Hiccup-kirjastolla, joka generoi HTML:ää
+        Clojure-tietorakenteiden pohjalta. Kukin näkymä on Clojure-funktio,
+        joka ottaa parametreikseen tarvitsemansa datan ja palauttaa näkymän
+        HTML:ksi renderöitynä. Pohjamalline ja useilla sivuilla käytettyjä
+        komponentteja on toteutettu Clojure-funktioina, jotka palauttavat
+        Hiccup-yhteensopivaa dataa.
+\end{itemize}
+
+
 \section{Käyttöliittymä}
 
 Alustava sivukartta on esitetty kuvassa \ref{fig:sivukartta}.
