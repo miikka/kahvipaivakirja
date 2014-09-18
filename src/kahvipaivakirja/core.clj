@@ -4,6 +4,9 @@
    kahvipaivakirja.model
    kahvipaivakirja.views)
   (:require
+   [cemerick.friend :as friend]
+   [cemerick.friend.credentials :as creds]
+   [cemerick.friend.workflows :as workflows]
    [compojure.handler :as handler]
    [compojure.route :as route]
    [hiccup.middleware :refer [wrap-base-url]]))
@@ -17,11 +20,16 @@
   (GET "/roastery/:id/" [id] (roastery-info-page))
   (GET "/roastery/:id/edit/" [id] (edit-roastery-page))
   (GET "/tasting/" [] (new-tasting-page))
-  (GET "/user/" [] (profile-page))
+  (GET "/user/" [] (friend/authenticated (profile-page)))
   (GET "/about" [] (readme))
   (route/resources "/")
   (route/not-found "Not Found"))
 
 (def app
-  (-> (handler/site main-routes)
+  (-> main-routes
+      (friend/authenticate
+       {:credential-fn (partial creds/bcrypt-credential-fn (partial get-user-by-name))
+        :login-uri "/"
+        :workflows [(workflows/interactive-form)]})
+      (handler/site)
       (wrap-base-url)))

@@ -2,6 +2,7 @@
   :description "Coffee tasting diary"
   :url "https://github.com/miikka/kahvipaivakirja"
   :dependencies [[org.clojure/clojure "1.5.1"]
+                 [com.cemerick/friend "0.2.1"]
                  [compojure "1.1.8"]
                  [crypto-password "0.1.3"]
                  [endophile "0.1.2"]

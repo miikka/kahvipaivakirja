@@ -52,7 +52,7 @@
 (defn ^:private input [id type label & [value]]
   [:div.form-group
    [:label {:for id} label]
-   [:input {:id id :type type :class "form-control" :value value}]])
+   [:input {:id id :name id :type type :class "form-control" :value value}]])
 
 (defn ^:private text-area [id type label]
   [:div.form-group
@@ -75,9 +75,9 @@
      [:div.panel.panel-default
       [:div.panel-heading [:h3.panel-title "Kirjaudu"]]
       [:div.panel-body
-       [:form {:role "form"}
-        (list (input "login-username" :text "Käyttäjänimi")
-              (input "login-password" :password "Salasana"))
+       [:form {:role "form" :method "POST" :action (to-uri "/")}
+        (list (input "username" :text "Käyttäjänimi")
+              (input "password" :password "Salasana"))
         [:button {:type "submit" :class "btn btn-default"} "Kirjaudu"]]]]]]
    [:div.row
     [:div.col-md-6

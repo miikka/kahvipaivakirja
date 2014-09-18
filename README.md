@@ -70,6 +70,16 @@ Tietokanta-asetukset tallenetaan tiedostoon `~/.kahvipaivakirja.edn`
 
 ### Paikallisen testipalvelimen ajaminen
 
+Testipalvelinta kannattaa ajaa REPLissä:
+
+	(use 'kahvipaivakirja.core 'ring.server.standalone)
+	(def s (serve app)
+
+	;; Kun haluat pysäyttää palvelimen:
+	(.stop s)
+
+Komentoriviltä palvelimen voi käynnistää komennolla.
+
     lein ring server-headless
 
 Palvelin pyörii osoitteessa http://localhost:3000/
