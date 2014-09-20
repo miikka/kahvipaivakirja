@@ -14,8 +14,10 @@
 
 (def db-spec (read-db-spec))
 
-(defquery get-coffees "sql/get-coffees.sql")
+(defquery get-coffees-query "sql/get-coffees.sql")
 (defquery get-user-by-name-query "sql/get-user-by-name.sql")
+
+(defn get-coffees [] (get-coffees-query db-spec))
 
 (defn get-user-by-name
   "Find an user by the the username. If the user does not exists, return nil."

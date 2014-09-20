@@ -50,9 +50,12 @@
         [:li (active? :front-page page) (link-to "/" "Etusivu")]
         [:li (active? :coffee-ranking page) (link-to "/coffee/" "Parhaat kahvit")]
         [:li (active? :roastery-ranking page) (link-to "/roastery/" "Parhaat paahtimot")]
-        [:li (active? :new-tasting page) (link-to "/tasting/" "Lisää maistelu")]
-        [:li (active? :profile page) (link-to "/user/" "Oma sivu")]
-        [:li (link-to "/logout/" "Kirjaudu ulos")]]]]]
+        [:li (active? :new-tasting page) (link-to "/tasting/" "Lisää maistelu")]]
+       [:ul.nav.navbar-nav.navbar-right
+        (if (:user ctx)
+          (list [:li (active? :profile page) (link-to "/user/" "Oma sivu")]
+                [:li (link-to "/logout/" "Kirjaudu ulos")])
+          [:li (link-to "/login/" "Kirjaudu sisään")])]]]]
     [:div.container content]]))
 
 ;;; HTML COMPONENTS (a.k.a. partials)
@@ -90,6 +93,16 @@
   [coffee & args]
   (apply link-to (str "/roastery/" (coffee :roastery_id) "/") (coffee :roastery_name)))
 
+(defn ^:private login-form
+  []
+  [:div.panel.panel-default
+   [:div.panel-heading [:h3.panel-title "Kirjaudu"]]
+   [:div.panel-body
+    [:form {:role "form" :method "POST" :action (to-uri "/login/")}
+     (list (input "username" :text "Käyttäjänimi")
+           (input "password" :password "Salasana"))
+     [:button {:type "submit" :class "btn btn-default"} "Kirjaudu"]]]])
+
 ;;; PAGES
 
 (defn front-page [ctx]
@@ -99,13 +112,9 @@
     [:div.col-md-6
      (image {:class "img-responsive"} "/images/jaakahvi.jpg")]
     [:div.col-md-6
-     [:div.panel.panel-default
-      [:div.panel-heading [:h3.panel-title "Kirjaudu"]]
-      [:div.panel-body
-       [:form {:role "form" :method "POST" :action (to-uri "/")}
-        (list (input "username" :text "Käyttäjänimi")
-              (input "password" :password "Salasana"))
-        [:button {:type "submit" :class "btn btn-default"} "Kirjaudu"]]]]]]
+     (if (:user ctx)
+       (str "Tervetuloa kahvipäiväkirjaan, " (:user ctx) "!")
+       (login-form))]]
    [:div.row
     [:div.col-md-6
      [:h3 "Parhaat kahvit"]
@@ -115,6 +124,11 @@
      [:h3 "Parhaat paahtimot"]
      [:ol
       [:li "Tim Wendelboe"]]]]))
+
+(defn login-page [ctx]
+  (base
+   ctx :login-page "Kirjaudu"
+   [:div.row [:div.col-md-6 (login-form)]]))
 
 (defn new-tasting-page [ctx]
   (base
@@ -233,10 +247,10 @@
      [:td "Juhla Mokka"]
      [:td "2.7"]]]))
 
-(defn profile-page [username]
+(defn profile-page [ctx]
   (base
    ctx :profile "Käyttäjäsivu"
-   [:div.page-header [:h2 "Käyttäjä: " username]]
+   [:div.page-header [:h2 "Käyttäjä: " (:user ctx)]]
    [:div.row
     [:div.col-md-12 [:h3 "Omat suosikit"]]]
    [:div.row
