@@ -11,6 +11,12 @@ held in Finnish, all the documentation is in Finnish, too.
 * Työn dokumentaatio: [doc/dokumentaatio.pdf][docs]
 * ConnectionTest: http://t-miikoski.users.cs.helsinki.fi/ConnectionTest/
 * Listaustesti: http://t-miikoski.users.cs.helsinki.fi/kahvipaivakirja/coffee/ (Tietojen haku tietokannasta on toteutettu tällä hetkellä vain tälle sivulle. Muut sivut on kovakoodattu.)
+* Kirjautumissivu: http://t-miikoski.users.cs.helsinki.fi/kahvipaivakirja/login/
+
+## Käyttäjätunnukset ja salasanat
+
+* Tavallinen käyttäjä: `Testaaja`/`kofeiini`
+* Ylläpitäjä: `Ylläpitäjä`/`kofeiini`
 
 ### HTML-demosivut
 
