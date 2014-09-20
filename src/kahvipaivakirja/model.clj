@@ -19,7 +19,11 @@
 
 (defn get-coffees [] (get-coffees-query db-spec))
 
+(defn ^:private user-roles [user]
+  (if (:admin user) [:admin] []))
+
 (defn get-user-by-name
   "Find an user by the the username. If the user does not exists, return nil."
   [username]
-  (first (get-user-by-name-query db-spec username)))
+  (when-let [user (first (get-user-by-name-query db-spec username))]
+    (assoc user :roles (user-roles user))))

@@ -24,7 +24,8 @@
   [req]
   (let [user (friend/current-authentication req)]
    {:user user
-    :username (:username user)}))
+    :username (:username user)
+    :admin (:admin user)}))
 
 (defn authenticated?
   "Returns true if the user has been authenticated."
@@ -60,10 +61,12 @@
   (GET "/" req (render req views/front-page))
   (GET "/coffee/" req (render req views/coffee-ranking-page (get-coffees)))
   (GET "/coffee/:id/" req (render req views/coffee-info-page))
-  (GET "/coffee/:id/edit/" req (render req views/edit-coffee-page))
+  (GET "/coffee/:id/edit/" req
+       (friend/authorize #{:admin} (render req views/edit-coffee-page)))
   (GET "/roastery/" req (render req views/roastery-ranking-page))
   (GET "/roastery/:id/" req (render req views/roastery-info-page))
-  (GET "/roastery/:id/edit/" req (render req views/edit-roastery-page))
+  (GET "/roastery/:id/edit/" req
+       (friend/authorize #{:admin} (render req views/edit-roastery-page)))
   (GET "/tasting/" req (friend/authenticated (render req views/new-tasting-page)))
   (GET "/user/" req (friend/authenticated (render req views/profile-page)))
   (GET "/login/" req (login-page req))

@@ -165,7 +165,7 @@
    [:div.row
     [:div.col-md-12
      [:p "Kahvia Marimira on maisteltu yhden kerran. Ensimmäinen kerta 13.9.2014."]
-     (link-button "/coffee/1/edit/" "Muokkaa")]]
+     (when (:admin ctx) (link-button "/coffee/1/edit/" "Muokkaa"))]]
    [:div.row
     [:div.col-md-12
      [:h3 "Maisteluhistoria"]]]
@@ -188,7 +188,7 @@
    [:div.row
     [:div.col-md-12
      [:p "Paahtimon Drop Coffee kahveja on maisteltu yhden kerran. Ensimmäinen kerta 13.9.2014."]
-     (link-button "/roastery/1/edit/" "Muokkaa")]]
+     (when (:admin ctx) (link-button "/roastery/1/edit/" "Muokkaa"))]]
     [:div.row
      [:div.col-md-12
       [:h3 "Kahvit"]]]
