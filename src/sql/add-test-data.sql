@@ -19,7 +19,7 @@ INSERT INTO users
 (username, email, password, admin, joined)
 VALUES
 (
- 'Ylläpitäjä',
+ 'Yllapitaja',
  'test@example.com',
  -- The password is 'kofeiini'.
  '$2a$11$Uf63kyWK.8Sl9FHXb4DM.udCZB9gzVeR.EC/u2yY5K6ZqSkCLIEqy',
