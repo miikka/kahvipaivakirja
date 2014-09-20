@@ -64,7 +64,7 @@
   (GET "/roastery/" req (render req views/roastery-ranking-page))
   (GET "/roastery/:id/" req (render req views/roastery-info-page))
   (GET "/roastery/:id/edit/" req (render req views/edit-roastery-page))
-  (GET "/tasting/" req (render req views/new-tasting-page))
+  (GET "/tasting/" req (friend/authenticated (render req views/new-tasting-page)))
   (GET "/user/" req (friend/authenticated (render req views/profile-page)))
   (GET "/login/" req (login-page req))
   (GET "/logout/" req (friend/logout* (redirect req "/")))

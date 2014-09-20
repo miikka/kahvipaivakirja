@@ -44,17 +44,18 @@
         [:span.icon-bar]
         [:span.icon-bar]
         [:span.icon-bar]]
-       [:a.navbar-brand {:href "#"} "Kahvipäiväkirja"]]
+       [:a.navbar-brand {:href (to-uri "/")} "Kahvipäiväkirja"]]
       [:div#navbar {:class "collapse navbar-collapse"}
        [:ul.nav.navbar-nav
         [:li (active? :front-page page) (link-to "/" "Etusivu")]
         [:li (active? :coffee-ranking page) (link-to "/coffee/" "Parhaat kahvit")]
-        [:li (active? :roastery-ranking page) (link-to "/roastery/" "Parhaat paahtimot")]
-        [:li (active? :new-tasting page) (link-to "/tasting/" "Lisää maistelu")]]
+        [:li (active? :roastery-ranking page) (link-to "/roastery/" "Parhaat paahtimot")]]
        [:ul.nav.navbar-nav.navbar-right
         (if (:user ctx)
-          (list [:li (active? :profile page) (link-to "/user/" "Oma sivu")]
-                [:li (link-to "/logout/" "Kirjaudu ulos")])
+          (list
+           [:li (active? :new-tasting page) (link-to "/tasting/" "Lisää maistelu")]
+           [:li (active? :profile page) (link-to "/user/" "Oma sivu")]
+           [:li (link-to "/logout/" "Kirjaudu ulos")])
           [:li (link-to "/login/" "Kirjaudu sisään")])]]]]
     [:div.container content]]))
 
