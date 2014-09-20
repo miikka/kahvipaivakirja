@@ -14,11 +14,6 @@
 
 ;;; HELPERS
 
-(defn current-user
-  "Return the username of the currently authenticated user."
-  [req]
-  (-> req friend/identity :current))
-
 (defn make-context
   "Return a map of contextual information to be used by the views."
   [req]
@@ -30,7 +25,7 @@
 (defn authenticated?
   "Returns true if the user has been authenticated."
   [req]
-  (not (nil? (current-user req))))
+  (not (nil? (friend/current-authentication req))))
 
 (defn redirect
   "Redirect to the given relative path."
