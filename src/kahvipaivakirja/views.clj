@@ -1,5 +1,8 @@
 (ns kahvipaivakirja.views
-  "Hiccup views for Kahvipäiväkirja"
+  "Hiccup views for Kahvipäiväkirja.
+
+  The views are Clojure functions that return an HTML string. They all
+  take a context map as the first parameter. (See kahvipaivakirja.core/make-context.)"
   (:require
    [clojure.java.io :as io]
    [endophile.core :refer [mp to-clj html-string]]
@@ -14,13 +17,15 @@
         (include-js "/js/jquery-2.1.1.min.js"
                     "/bootstrap/js/bootstrap.js")))
 
+;;; BASE TEMPLATE
+
 (defn ^:private active?
   [page current & attr-map]
   (if (= page current)
     (merge {:class "active"} attr-map)
     attr-map))
 
-(defn ^:private base [page title & content]
+(defn ^:private base [ctx page title & content]
   (html5 {:lang "fi"}
    [:head
     [:title (if title
@@ -50,6 +55,8 @@
         [:li (link-to "/logout/" "Kirjaudu ulos")]]]]]
     [:div.container content]]))
 
+;;; HTML COMPONENTS (a.k.a. partials)
+
 (defn ^:private input [id type label & [value]]
   [:div.form-group
    [:label {:for id} label]
@@ -66,9 +73,28 @@
    [:select {:id id :class "form-control"}
     (for [option options] [:option option])]])
 
-(defn front-page []
+(defn ^:private empty-star []
+  [:span.glyphicon.glyphicon-star-empty])
+
+(defn ^:private submit-button [text]
+  [:button {:type "submit" :class "btn btn-default"} text])
+
+(defn ^:private link-button [target text]
+  [:a {:href (to-uri target) :class "btn btn-primary" :role "button"} text])
+
+(defn ^:private coffee-link
+  [coffee & args]
+  (apply link-to (str "/coffee/" (coffee :roastery_id) "/") (coffee :name)))
+
+(defn ^:private roastery-link
+  [coffee & args]
+  (apply link-to (str "/roastery/" (coffee :roastery_id) "/") (coffee :roastery_name)))
+
+;;; PAGES
+
+(defn front-page [ctx]
   (base
-   :front-page "Etusivu"
+   ctx :front-page "Etusivu"
    [:div.row
     [:div.col-md-6
      (image {:class "img-responsive"} "/images/jaakahvi.jpg")]
@@ -90,12 +116,9 @@
      [:ol
       [:li "Tim Wendelboe"]]]]))
 
-(defn ^:private empty-star []
-  [:span.glyphicon.glyphicon-star-empty])
-
-(defn new-tasting-page []
+(defn new-tasting-page [ctx]
   (base
-   :new-tasting "Lisää maistelu"
+   ctx :new-tasting "Lisää maistelu"
    [:div.row
     [:div.col-md-12
      [:h3 "Lisää maistelu"]]]
@@ -116,15 +139,9 @@
      [:div.col-md-12
       [:button {:type "submit" :class "btn btn-default"} "Tallenna"]]]]))
 
-(defn ^:private submit-button [text]
-  [:button {:type "submit" :class "btn btn-default"} text])
-
-(defn ^:private link-button [target text]
-  [:a {:href (to-uri target) :class "btn btn-primary" :role "button"} text])
-
-(defn coffee-info-page []
+(defn coffee-info-page [ctx]
   (base
-   :coffee-info "Drop Coffee: Marimira"
+   ctx :coffee-info "Drop Coffee: Marimira"
    [:div.page-header [:h1 (list (link-to "/roastery/1/" "Drop Coffee") ": Marimira")]]
    [:div.row
     [:div.col-md-12
@@ -145,9 +162,9 @@
        [:td "Miikka"]
        [:td "4"]]]]]))
 
-(defn roastery-info-page []
+(defn roastery-info-page [ctx]
   (base
-   :roastery-info "Drop Coffee"
+   ctx :roastery-info "Drop Coffee"
    [:div.page-header [:h1 "Drop Coffee"]]
    [:div.row
     [:div.col-md-12
@@ -168,17 +185,9 @@
         [:td "4"]
         [:td "1"]]]]]))
 
-(defn ^:private coffee-link
-  [coffee & args]
-  (apply link-to (str "/coffee/" (coffee :roastery_id) "/") (coffee :name)))
-
-(defn ^:private roastery-link
-  [coffee & args]
-  (apply link-to (str "/roastery/" (coffee :roastery_id) "/") (coffee :roastery_name)))
-
-(defn coffee-ranking-page [coffees]
+(defn coffee-ranking-page [ctx coffees]
   (base
-   :coffee-ranking "Parhaat kahvit"
+   ctx :coffee-ranking "Parhaat kahvit"
    [:div.page-header [:h2 "Parhaat kahvit"]]
    [:div.row
     [:div.col-md-12
@@ -198,9 +207,9 @@
               "-")]
        [:td (coffee :rating_count)]])]))
 
-(defn roastery-ranking-page []
+(defn roastery-ranking-page [ctx]
   (base
-   :roastery-ranking "Parhaat paahtimot"
+   ctx :roastery-ranking "Parhaat paahtimot"
    [:div.page-header [:h2 "Parhaat paahtimot"]]
    [:table.table.table-hover
     [:tr
@@ -226,7 +235,7 @@
 
 (defn profile-page [username]
   (base
-   :profile "Käyttäjäsivu"
+   ctx :profile "Käyttäjäsivu"
    [:div.page-header [:h2 "Käyttäjä: " username]]
    [:div.row
     [:div.col-md-12 [:h3 "Omat suosikit"]]]
@@ -256,9 +265,9 @@
        [:td "Magdalena"]
        [:td "3"]]]]]))
 
-(defn edit-coffee-page []
+(defn edit-coffee-page [ctx]
   (base
-   :edit-coffee "Muokkaa kahvia"
+   ctx :edit-coffee "Muokkaa kahvia"
    [:div.page-header [:h2 "Muokkaa kahvia Marimira"]]
    [:form {:role "form"}
     [:div.row
@@ -274,9 +283,9 @@
                              ["Drop Coffee / Marimira" "Square Mile Coffee / Magdalena"])]]
     [:div.row [:div.col-md-12 (submit-button "Yhdistä")]]]))
 
-(defn edit-roastery-page []
+(defn edit-roastery-page [ctx]
   (base
-   :edit-roastery "Muookkaa paahtimoa"
+   ctx :edit-roastery "Muookkaa paahtimoa"
    [:div.page-header [:h2 "Muokkaa paahtimoa Drop Coffee"]]
    [:form {:role "form"}
     [:div.row
@@ -290,9 +299,11 @@
                              ["Drop Coffee" "Square Mile Coffee"])]]
     [:div.row [:div.col-md-12 (submit-button "Yhdistä")]]]))
 
+;;; README
+
 (defn readme
   "Render README.md as HTML."
-  []
+  [ctx]
   (let [content (-> (io/resource "README.md")
                     (io/file)
                     (slurp)
@@ -303,6 +314,6 @@
                     (to-clj)
                     (html-string))]
     (base
-     :about "Esittelysivu"
+     ctx :about "Esittelysivu"
      [:div.row
       [:div.col-md-12 content]])))
