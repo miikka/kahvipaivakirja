@@ -230,6 +230,22 @@ MVC-malli ilmenee seuraavasti:
 \end{itemize}
 
 
+\subsection{Kirjautuminen ja sessiot}
+
+Kirjautumisen toteutuksessa käytetään hyväksi
+\href{https://github.com/cemerick/friend}{friend-kirjastoa}, joka
+hoitaa käyttäjätietojen tarkistamisen ja session päivittämisen
+kirjautumistietojen osalta. Käyttäjätiedot haetaan tietokannan
+users-taulusta.
+
+Sessioissa käytetään Ringin sessio-middlewarea, joka tallentaa sessiot
+palvelimen muistiin. Käyttäjälle lähetetään
+\texttt{ring-session}-niminen eväste, joka sisältää session
+tunnuksen. Sessioiden tallentamisen muistiin varjopuolena on se, että
+aina kun palvelin käynistetään uudestaan, esim. sovellusta
+päivittäessä, sessiomuisti tyhjennetään.
+
+
 \section{Käyttöliittymä}
 
 Alustava sivukartta on esitetty kuvassa \ref{fig:sivukartta}.
