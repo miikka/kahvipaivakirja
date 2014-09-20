@@ -22,7 +22,9 @@
 (defn make-context
   "Return a map of contextual information to be used by the views."
   [req]
-  {:user (current-user req)})
+  (let [user (friend/current-authentication req)]
+   {:user user
+    :username (:username user)}))
 
 (defn authenticated?
   "Returns true if the user has been authenticated."

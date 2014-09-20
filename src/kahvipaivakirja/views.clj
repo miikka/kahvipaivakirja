@@ -113,7 +113,7 @@
      (image {:class "img-responsive"} "/images/jaakahvi.jpg")]
     [:div.col-md-6
      (if (:user ctx)
-       (str "Tervetuloa kahvipäiväkirjaan, " (:user ctx) "!")
+       (str "Tervetuloa kahvipäiväkirjaan, " (:username ctx) "!")
        (login-form))]]
    [:div.row
     [:div.col-md-6
@@ -250,7 +250,7 @@
 (defn profile-page [ctx]
   (base
    ctx :profile "Käyttäjäsivu"
-   [:div.page-header [:h2 "Käyttäjä: " (:user ctx)]]
+   [:div.page-header [:h2 "Käyttäjä: " (:username ctx)]]
    [:div.row
     [:div.col-md-12 [:h3 "Omat suosikit"]]]
    [:div.row
