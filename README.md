@@ -104,3 +104,6 @@ Sovellus asennetaan users-palvelimelle tekemällä siitä WAR-tiedosto ja
 kopioimalla se `~/tomcat/webapps`-hakemistoon. Tämän voi tehdä komennolla:
 
     make deploy
+
+Ensimmäistä kertaa sovellusta asennettaessa tietokanta on ensin
+alustettava. Aja users-palvelimella komento `make reset-db`.
