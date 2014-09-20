@@ -50,7 +50,9 @@
   [req]
   (if (authenticated? req)
     (redirect req "/user/")
-    (render req views/login-page)))
+    (render req views/login-page
+            (get-in req [:params :login_failed])
+            (get-in req [:params :username] ""))))
 
 ;;; ROUTES
 

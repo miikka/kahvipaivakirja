@@ -94,12 +94,12 @@
   (apply link-to (str "/roastery/" (coffee :roastery_id) "/") (coffee :roastery_name)))
 
 (defn ^:private login-form
-  []
+  [username]
   [:div.panel.panel-default
    [:div.panel-heading [:h3.panel-title "Kirjaudu"]]
    [:div.panel-body
     [:form {:role "form" :method "POST" :action (to-uri "/login/")}
-     (list (input "username" :text "Käyttäjänimi")
+     (list (input "username" :text "Käyttäjänimi" username)
            (input "password" :password "Salasana"))
      [:button {:type "submit" :class "btn btn-default"} "Kirjaudu"]]]])
 
@@ -114,7 +114,7 @@
     [:div.col-md-6
      (if (:user ctx)
        (str "Tervetuloa kahvipäiväkirjaan, " (:username ctx) "!")
-       (login-form))]]
+       (login-form ""))]]
    [:div.row
     [:div.col-md-6
      [:h3 "Parhaat kahvit"]
@@ -125,10 +125,14 @@
      [:ol
       [:li "Tim Wendelboe"]]]]))
 
-(defn login-page [ctx]
+(defn login-page [ctx show-error username]
   (base
    ctx :login-page "Kirjaudu"
-   [:div.row [:div.col-md-6 (login-form)]]))
+   [:div.row
+    [:div.col-md-6
+     (when show-error
+       [:div.alert.alert-danger {:role "alert"} "Virheellinen käyttäjänimi tai salasana!"])
+     (login-form username)]]))
 
 (defn new-tasting-page [ctx]
   (base
