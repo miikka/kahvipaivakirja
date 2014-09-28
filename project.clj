@@ -7,6 +7,7 @@
                  [compojure "1.1.8"]
                  [crypto-password "0.1.3"]
                  [endophile "0.1.2"]
+                 [formative "0.8.8" :exclusions [clj-time]]
                  [hiccup "1.0.5"]
                  [org.clojure/tools.namespace "0.2.7"]
                  [org.postgresql/postgresql "9.3-1102-jdbc4"]

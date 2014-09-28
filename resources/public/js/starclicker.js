@@ -6,7 +6,6 @@
 	    $root.children('span').each(function(idx, el) {
 		$el = $(el);
 		$el.removeClass("glyphicon-star glyphicon-star-empty");
-		console.log(value, $el.data('st-value'));
 		if (parseInt($el.data('st-value')) <= value) {
 		    $el.addClass('glyphicon-star');
 		} else {
@@ -18,6 +17,6 @@
     }
 
     $(function() {
-	starclicker($(".js-starclicker"));
+	$(".js-starclicker").each(function(_, el) { starclicker($(el)); });
     });
 })(jQuery);

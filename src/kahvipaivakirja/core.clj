@@ -8,7 +8,9 @@
    [cemerick.friend.workflows :as workflows]
    [compojure.handler :as handler]
    [compojure.route :as route]
+   [formative.parse :refer [parse-params]]
    [hiccup.middleware :refer [wrap-base-url]]
+   [kahvipaivakirja.forms :as forms]
    [kahvipaivakirja.views :as views]
    [ring.util.response :as response]))
 
@@ -52,6 +54,14 @@
             (get-in req [:params :login_failed])
             (get-in req [:params :username] ""))))
 
+(defn save-tasting
+  [req]
+  (let [params (parse-params (forms/tasting-form (get-roasteries) (get-coffees)) (:params req))
+        new-tasting (create-tasting params)]
+    (prn :foo (:params req) new-tasting)
+    (assert new-tasting)
+    (redirect req (str "/tasting/" (:id new-tasting) "/edit/"))))
+
 ;;; ROUTES
 
 (defroutes main-routes
@@ -64,7 +74,17 @@
   (GET "/roastery/:id/" req (render req views/roastery-info-page))
   (GET "/roastery/:id/edit/" req
        (friend/authorize #{:admin} (render req views/edit-roastery-page)))
-  (GET "/tasting/" req (friend/authenticated (render req views/new-tasting-page)))
+  (GET "/tasting/" req
+       (let [roasteries (get-roasteries)
+             coffees (get-coffees)]
+         (friend/authenticated (render req views/new-tasting-page roasteries coffees))))
+  (POST "/tasting/" req (friend/authenticated (save-tasting req)))
+  (GET "/tasting/:id/edit/" [id :as req]
+       (friend/authenticated
+        ;; XXX(miikka) Should check whether user owns the tasting!
+        ;; XXX(miikka) Should 404 when there's no tasting.
+        (let [tasting (get-tasting-by-id (Integer/valueOf id))]
+          (render req views/edit-tasting-page tasting))))
   (GET "/user/" req
        (friend/authenticated
         (let [tastings (get-tastings-by-user (current-user req))]

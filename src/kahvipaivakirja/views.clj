@@ -6,10 +6,12 @@
   (:require
    [clojure.java.io :as io]
    [endophile.core :refer [mp to-clj html-string]]
+   [formative.core :as formative]
    [hiccup.core :refer [html]]
    [hiccup.element :refer [image link-to]]
    [hiccup.page :refer [html5 include-css include-js]]
    [hiccup.util :refer [to-uri]]
+   [kahvipaivakirja.forms :as forms]
    [kahvipaivakirja.views.helpers :refer [format-date]]))
 
 (defn ^:private include-bootstrap []
@@ -78,7 +80,7 @@
   [:div.form-group
    [:label {:for id} label]
    [:select {:id id :class "form-control"}
-    (for [option options] [:option option])]])
+    (for [[text value] options] [:option {:value value} text])]])
 
 (defn ^:private empty-star []
   [:span.glyphicon.glyphicon-star-empty])
@@ -147,28 +149,15 @@
        [:div.alert.alert-danger {:role "alert"} "Virheellinen käyttäjänimi tai salasana!"])
      (login-form username)]]))
 
-(defn new-tasting-page [ctx]
+(defn new-tasting-page [ctx roasteries coffees]
   (base
    ctx :new-tasting "Lisää maistelu"
    [:div.row
     [:div.col-md-12
      [:h3 "Lisää maistelu"]]]
-   [:form {:role "form"}
-    [:div.row
-     [:div.col-md-4 (select "tasting-roastery" "Paahtimo" ["" "Tim Wendelboe" "Square Mile Coffee"])]
-     [:div.col-md-4 (select "tasting-coffee" "Kahvi" [""  "Juhla Mokka" "Tumma Presidentti"])]
-     [:div.col-md-4 (input "tasting-location" :text "Sijainti")]]
-    [:div.row
-     [:div.col-md-4 (select "tasting-type" "Laatu" ["" "Suodatin" "Cappuccino" "Espresso"])]
-     [:div.col-md-4
-      ;; XXX(miikka) JS to make this work TBD.
-      [:div.form-group
-       [:label "Arvio"]
-       [:div.form-control (for [i (range 5)] (empty-star))]]]
-     [:div.col-md-4 (text-area "tasting-notes" :text "Muistiinpanot")]]
-    [:div.row
-     [:div.col-md-12
-      [:button {:type "submit" :class "btn btn-default"} "Tallenna"]]]]))
+   [:div.row
+    [:div.col-md-12
+     (formative/render-form (forms/tasting-form roasteries coffees))]]))
 
 (defn coffee-info-page [ctx]
   (base
@@ -284,13 +273,26 @@
        [:th "Päiväys"]
        [:th "Paahtimo"]
        [:th "Kahvi"]
-       [:th "Arvosana"]]
+       [:th "Arvosana"]
+       [:th "Toiminnot"]]
       (for [tasting tastings]
         [:tr
          [:td (format-date (:created tasting))]
          [:td (roastery-link tasting)]
          [:td (coffee-link tasting)]
-         [:td (:rating tasting)]])]]]))
+         [:td (:rating tasting)]
+         [:td (link-to {:class "btn btn-xs btn-default" :role "button"}
+                       (str "/tasting/" (:id tasting) "/edit/") "Muokkaa")]])]]]))
+
+(defn edit-tasting-page [ctx tasting]
+  (base
+   ctx :edit-tasting "Muokkaa maistelua"
+   [:div.page-header [:h2 (format "Maistelukokemus: %s (%s)"
+                                  (:coffee_name tasting)
+                                  (:roastery_name tasting))]]
+   [:div.row
+    [:div.col-md-12
+     "TBD"]]))
 
 (defn edit-coffee-page [ctx]
   (base
