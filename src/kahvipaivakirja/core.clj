@@ -67,6 +67,20 @@
         (let [problems (:problems (ex-data ex))]
           (render req views/new-tasting-page coffees (:params req) problems))))))
 
+;; XXX(miikka) This function duplicates save-tasting quite a bit.
+(defn update-tasting-
+  [req tasting-id]
+  (let [coffees (get-coffees)
+        user-id (:id (current-user req))]
+    ;; XXX(miikka) Ensure that tasting-id exists. (Look at the return value of update-tasting)
+    (try
+      (let [params (parse-params (forms/tasting-form coffees) (:params req))]
+        (update-tasting tasting-id params)
+        (redirect req "/user/"))
+      (catch clojure.lang.ExceptionInfo ex
+        (let [problems (:problems (ex-data ex))]
+          (render req views/edit-tasting-page coffees (:params req) problems))))))
+
 ;;; ROUTES
 
 (defroutes main-routes
@@ -83,6 +97,7 @@
        (let [coffees (get-coffees)]
          (friend/authenticated (render req views/new-tasting-page coffees {} []))))
   (POST "/tasting/" req (friend/authenticated (save-tasting req)))
+  (POST "/tasting/:id/edit/" [id :as req] (friend/authenticated (update-tasting- req (Integer/valueOf id))))
   (GET "/tasting/:id/edit/" [id :as req]
        (friend/authenticated
         ;; XXX(miikka) Should check whether user owns the tasting!
