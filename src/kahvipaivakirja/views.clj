@@ -149,8 +149,13 @@
        [:div.alert.alert-danger {:role "alert"} "Virheellinen käyttäjänimi tai salasana!"])
      (login-form username)]]))
 
-(defn render-form [form values & [problems]]
+(defn ^:private render-form [form values & [problems]]
   (formative/render-form (assoc form :values values :problems problems)))
+
+(defn ^:private delete-button [tasting]
+  [:form {:method "POST" :action (to-uri (str "/tasting/" (:id tasting) "/delete/"))
+          :style "display: inline;"}
+   [:button {:type "submit" :class "btn btn-primary btn-xs"} "Poista"]])
 
 (defn new-tasting-page [ctx coffees values problems]
   (base
@@ -283,7 +288,8 @@
          [:td (coffee-link tasting)]
          [:td (:rating tasting)]
          [:td (link-to {:class "btn btn-xs btn-default" :role "button"}
-                       (str "/tasting/" (:id tasting) "/edit/") "Muokkaa")]])]]]))
+                       (str "/tasting/" (:id tasting) "/edit/") "Muokkaa")
+          (delete-button tasting)]])]]]))
 
 (defn edit-tasting-page [ctx coffees tasting]
   (base

@@ -81,6 +81,12 @@
         (let [problems (:problems (ex-data ex))]
           (render req views/edit-tasting-page coffees (:params req) problems))))))
 
+(defn delete-tasting
+  [req id]
+  ;; XXX(miikka) Ensure that the user owns this tasting.
+  (delete-tasting! id)
+  (redirect req "/user/"))
+
 ;;; ROUTES
 
 (defroutes main-routes
@@ -98,6 +104,8 @@
          (friend/authenticated (render req views/new-tasting-page coffees {} []))))
   (POST "/tasting/" req (friend/authenticated (save-tasting req)))
   (POST "/tasting/:id/edit/" [id :as req] (friend/authenticated (update-tasting- req (Integer/valueOf id))))
+  (POST "/tasting/:id/delete/" [id :as req]
+        (friend/authenticated (delete-tasting req (Integer/valueOf id))))
   (GET "/tasting/:id/edit/" [id :as req]
        (friend/authenticated
         ;; XXX(miikka) Should check whether user owns the tasting!

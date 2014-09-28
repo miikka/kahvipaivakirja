@@ -21,6 +21,7 @@
 (defquery get-roasteries-query "sql/get-roasteries.sql")
 (defquery create-tasting-query<! "sql/create-tasting.sql")
 (defquery update-tasting-query! "sql/update-tasting.sql")
+(defquery delete-tasting-query! "sql/delete-tasting.sql")
 
 (defn get-coffees [] (get-coffees-query db-spec))
 (defn get-roasteries [] (get-roasteries-query db-spec))
@@ -42,6 +43,8 @@
                          notes
                          coffee_id
                          id))
+
+(defn delete-tasting! [id] (delete-tasting-query! db-spec id))
 
 (defn ^:private user-roles [user]
   (if (:admin user) [:admin] []))
