@@ -71,15 +71,18 @@
 (defn update-tasting-
   [req tasting-id]
   (let [coffees (get-coffees)
-        user-id (:id (current-user req))]
-    ;; XXX(miikka) Ensure that tasting-id exists. (Look at the return value of update-tasting)
-    (try
-      (let [params (parse-params (forms/tasting-form coffees) (:params req))]
-        (update-tasting tasting-id params)
-        (redirect req "/user/"))
-      (catch clojure.lang.ExceptionInfo ex
-        (let [problems (:problems (ex-data ex))]
-          (render req views/edit-tasting-page coffees (:params req) problems))))))
+        user-id (:id (current-user req))
+        tasting (get-tasting-by-id tasting-id)]
+    (when tasting
+      (if (= (:user_id tasting) user-id)
+       (try
+         (let [params (parse-params (forms/tasting-form coffees) (:params req))]
+           (update-tasting tasting-id params)
+           (redirect req "/user/"))
+         (catch clojure.lang.ExceptionInfo ex
+           (let [problems (:problems (ex-data ex))]
+             (render req views/edit-tasting-page coffees (:params req) problems))))
+       (friend/throw-unauthorized (friend/identity req) {})))))
 
 (defn delete-tasting
   [req id]
