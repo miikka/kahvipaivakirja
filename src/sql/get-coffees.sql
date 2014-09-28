@@ -1,6 +1,6 @@
 SELECT
-	coffees.id,
-	coffees.name,
+	coffees.id as coffee_id,
+	coffees.name as coffee_name,
 	roasteries.id as roastery_id,
 	roasteries.name as roastery_name,
 	-- XXX(miikka) Is there a way to do this with only one sub-query?

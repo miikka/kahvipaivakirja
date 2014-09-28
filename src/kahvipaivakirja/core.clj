@@ -14,6 +14,8 @@
 
 ;;; HELPERS
 
+(defn current-user [req] (friend/current-authentication req))
+
 (defn make-context
   "Return a map of contextual information to be used by the views."
   [req]
@@ -63,7 +65,10 @@
   (GET "/roastery/:id/edit/" req
        (friend/authorize #{:admin} (render req views/edit-roastery-page)))
   (GET "/tasting/" req (friend/authenticated (render req views/new-tasting-page)))
-  (GET "/user/" req (friend/authenticated (render req views/profile-page)))
+  (GET "/user/" req
+       (friend/authenticated
+        (let [tastings (get-tastings-by-user (current-user req))]
+          (render req views/profile-page tastings))))
   (GET "/login/" req (login-page req))
   (GET "/logout/" req (friend/logout* (redirect req "/")))
   (GET "/about" req (render req views/readme))

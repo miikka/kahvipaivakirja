@@ -9,7 +9,8 @@
    [hiccup.core :refer [html]]
    [hiccup.element :refer [image link-to]]
    [hiccup.page :refer [html5 include-css include-js]]
-   [hiccup.util :refer [to-uri]]))
+   [hiccup.util :refer [to-uri]]
+   [kahvipaivakirja.views.helpers :refer [format-date]]))
 
 (defn ^:private include-bootstrap []
   (list (include-css "/bootstrap/css/bootstrap.css"
@@ -88,7 +89,7 @@
 
 (defn ^:private coffee-link
   [coffee & args]
-  (apply link-to (str "/coffee/" (coffee :roastery_id) "/") (coffee :name)))
+  (apply link-to (str "/coffee/" (coffee :coffee_id) "/") (coffee :coffee_name)))
 
 (defn ^:private roastery-link
   [coffee & args]
@@ -252,7 +253,7 @@
      [:td "Juhla Mokka"]
      [:td "2.7"]]]))
 
-(defn profile-page [ctx]
+(defn profile-page [ctx tastings]
   (base
    ctx :profile "Käyttäjäsivu"
    [:div.page-header [:h2 "Käyttäjä: " (:username ctx)]]
@@ -273,16 +274,12 @@
        [:th "Paahtimo"]
        [:th "Kahvi"]
        [:th "Arvosana"]]
-      [:tr
-       [:td "13.9.2014"]
-       [:td (link-to "/roastery/1/" "Drop Coffee")]
-       [:td (link-to "/coffee/1/" "Marimira")]
-       [:td "4"]]
-      [:tr
-       [:td "13.9.2014"]
-       [:td "Square Mile Coffee"]
-       [:td "Magdalena"]
-       [:td "3"]]]]]))
+      (for [tasting tastings]
+        [:tr
+         [:td (format-date (:created tasting))]
+         [:td (roastery-link tasting)]
+         [:td (coffee-link tasting)]
+         [:td (:rating tasting)]])]]]))
 
 (defn edit-coffee-page [ctx]
   (base

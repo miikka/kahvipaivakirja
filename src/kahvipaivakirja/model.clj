@@ -16,6 +16,7 @@
 
 (defquery get-coffees-query "sql/get-coffees.sql")
 (defquery get-user-by-name-query "sql/get-user-by-name.sql")
+(defquery get-tastings-by-user-query "sql/get-tastings-by-user.sql")
 
 (defn get-coffees [] (get-coffees-query db-spec))
 
@@ -27,3 +28,6 @@
   [username]
   (when-let [user (first (get-user-by-name-query db-spec username))]
     (assoc user :roles (user-roles user))))
+
+(defn get-tastings-by-user [user]
+  (get-tastings-by-user-query db-spec (:id user)))
