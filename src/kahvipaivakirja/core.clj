@@ -117,9 +117,9 @@
   (GET "/tasting/:id/edit/" [id :as req]
        (friend/authenticated
         ;; XXX(miikka) Should check whether user owns the tasting!
-        ;; XXX(miikka) Should 404 when there's no tasting.
         (let [tasting (get-tasting-by-id (Integer/valueOf id))]
-          (render req views/edit-tasting-page (get-coffees) tasting))))
+          (when tasting
+            (render req views/edit-tasting-page (get-coffees) tasting)))))
   (GET "/user/" req
        (friend/authenticated
         (let [tastings (get-tastings-by-user (current-user req))]
