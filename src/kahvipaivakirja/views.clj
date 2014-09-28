@@ -149,7 +149,7 @@
        [:div.alert.alert-danger {:role "alert"} "Virheellinen käyttäjänimi tai salasana!"])
      (login-form username)]]))
 
-(defn new-tasting-page [ctx roasteries coffees]
+(defn new-tasting-page [ctx coffees]
   (base
    ctx :new-tasting "Lisää maistelu"
    [:div.row
@@ -157,7 +157,7 @@
      [:h3 "Lisää maistelu"]]]
    [:div.row
     [:div.col-md-12
-     (formative/render-form (forms/tasting-form roasteries coffees))]]))
+     (formative/render-form (forms/tasting-form coffees))]]))
 
 (defn coffee-info-page [ctx]
   (base
@@ -284,15 +284,17 @@
          [:td (link-to {:class "btn btn-xs btn-default" :role "button"}
                        (str "/tasting/" (:id tasting) "/edit/") "Muokkaa")]])]]]))
 
-(defn edit-tasting-page [ctx tasting]
+(defn render-form [form values]
+  (formative/render-form (assoc form :values values)))
+
+(defn edit-tasting-page [ctx coffees tasting]
   (base
    ctx :edit-tasting "Muokkaa maistelua"
    [:div.page-header [:h2 (format "Maistelukokemus: %s (%s)"
                                   (:coffee_name tasting)
                                   (:roastery_name tasting))]]
    [:div.row
-    [:div.col-md-12
-     "TBD"]]))
+    [:div.col-md-12 (render-form (forms/tasting-form coffees) tasting)]]))
 
 (defn edit-coffee-page [ctx]
   (base

@@ -31,12 +31,10 @@
       [:div.col-sm-10(formative.render/render-field field)]])])
 
 (defn tasting-form
-  [roasteries coffees]
-  (let [roastery-opts (map (juxt :id :name) roasteries)
-        coffee-opts (map (juxt :coffee_id :coffee_name) coffees)]
-    {:fields [{:name "roastery_id", :label "Paahtimo", :type :select, :datatype :int,
-               :options roastery-opts, :placeholder "(valitse paahtimo)"}
-              {:name "coffee_id", :label "Kahvi", :type :select, :datatype :int,
+  [coffees]
+  (let [format-label (fn [coffee] (str (:roastery_name coffee) " / " (:coffee_name coffee)))
+        coffee-opts (map (juxt :coffee_id format-label) coffees)]
+    {:fields [{:name "coffee_id", :label "Kahvi", :type :select, :datatype :int,
                :options coffee-opts, :placeholder "(valitse laatu)"}
               {:name "location", :label "Sijainti", :type :text}
               {:name "rating", :label "Arvosana", :type :stars, :datatype :int}

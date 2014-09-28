@@ -56,7 +56,7 @@
 
 (defn save-tasting
   [req]
-  (let [params (parse-params (forms/tasting-form (get-roasteries) (get-coffees)) (:params req))
+  (let [params (parse-params (forms/tasting-form (get-coffees)) (:params req))
         new-tasting (create-tasting params)]
     (redirect req (str "/tasting/" (:id new-tasting) "/edit/"))))
 
@@ -73,16 +73,15 @@
   (GET "/roastery/:id/edit/" req
        (friend/authorize #{:admin} (render req views/edit-roastery-page)))
   (GET "/tasting/" req
-       (let [roasteries (get-roasteries)
-             coffees (get-coffees)]
-         (friend/authenticated (render req views/new-tasting-page roasteries coffees))))
+       (let [coffees (get-coffees)]
+         (friend/authenticated (render req views/new-tasting-page coffees))))
   (POST "/tasting/" req (friend/authenticated (save-tasting req)))
   (GET "/tasting/:id/edit/" [id :as req]
        (friend/authenticated
         ;; XXX(miikka) Should check whether user owns the tasting!
         ;; XXX(miikka) Should 404 when there's no tasting.
         (let [tasting (get-tasting-by-id (Integer/valueOf id))]
-          (render req views/edit-tasting-page tasting))))
+          (render req views/edit-tasting-page (get-coffees) tasting))))
   (GET "/user/" req
        (friend/authenticated
         (let [tastings (get-tastings-by-user (current-user req))]
