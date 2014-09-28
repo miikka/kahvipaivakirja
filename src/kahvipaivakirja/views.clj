@@ -152,9 +152,7 @@
 (defn new-tasting-page [ctx coffees]
   (base
    ctx :new-tasting "Lisää maistelu"
-   [:div.row
-    [:div.col-md-12
-     [:h3 "Lisää maistelu"]]]
+   [:div.page-header [:h2 "Lisää maistelu"]]
    [:div.row
     [:div.col-md-12
      (formative/render-form (forms/tasting-form coffees))]]))

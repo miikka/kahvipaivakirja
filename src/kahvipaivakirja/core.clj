@@ -56,9 +56,11 @@
 
 (defn save-tasting
   [req]
-  (let [params (parse-params (forms/tasting-form (get-coffees)) (:params req))
-        new-tasting (create-tasting params)]
-    (redirect req (str "/tasting/" (:id new-tasting) "/edit/"))))
+  (let [user-id (-> (current-user req) :id)
+        params (assoc (parse-params (forms/tasting-form (get-coffees)) (:params req))
+                 :user_id user-id)]
+    (create-tasting params)
+    (redirect req "/user/")))
 
 ;;; ROUTES
 
