@@ -84,8 +84,13 @@
 (defn delete-tasting
   [req id]
   ;; XXX(miikka) Ensure that the user owns this tasting.
-  (delete-tasting! id)
-  (redirect req "/user/"))
+  (let [tasting (get-tasting-by-id id)]
+    (when tasting
+      (if (= (:user_id tasting) (:id (current-user req)))
+        (do
+          (delete-tasting! id)
+          (redirect req "/user/"))
+        (friend/throw-unauthorized (friend/identity req) {})))))
 
 ;;; ROUTES
 
