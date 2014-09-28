@@ -29,6 +29,6 @@ CREATE TABLE tastings
 	rating INTEGER,
 	notes VARCHAR(65535),
 	created TIMESTAMP,
-	coffee_id INTEGER REFERENCES coffees(id),
-	user_id INTEGER REFERENCES users(id) ON DELETE CASCADE
+	coffee_id INTEGER NOT NULL REFERENCES coffees(id),
+	user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE
 );
