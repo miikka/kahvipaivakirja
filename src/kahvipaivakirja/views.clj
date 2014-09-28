@@ -277,6 +277,7 @@
      [:table.table.table-hover
       [:tr
        [:th "Päiväys"]
+       [:th "Paikka"]
        [:th "Paahtimo"]
        [:th "Kahvi"]
        [:th "Arvosana"]
@@ -284,6 +285,7 @@
       (for [tasting tastings]
         [:tr
          [:td (format-date (:created tasting))]
+         [:td (:location tasting)]
          [:td (roastery-link tasting)]
          [:td (coffee-link tasting)]
          [:td (:rating tasting)]

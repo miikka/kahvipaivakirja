@@ -2,6 +2,7 @@ SELECT
 	tastings.id,
 	tastings.created,
 	tastings.rating,
+	tastings.location,
 	roasteries.id as roastery_id,
 	roasteries.name as roastery_name,
 	coffees.id as coffee_id,
