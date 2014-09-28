@@ -1,14 +1,24 @@
 (ns kahvipaivakirja.forms
+  "Kahvipäiväkirja uses formative to render forms and to validate form
+  input. This namespace contains some formative extensions and descriptions of the forms."
   (:require
+   [clojure.string :as string]
    formative.render
    formative.util
    [formative.core :as f]))
 
+;;; FORMATIVE EXTENSIONS
+
+(defn to-int
+  [s]
+  (when (and s (not (and (string? s) (string/blank? s))))
+    (Integer/valueOf s)))
+
 (defmethod formative.render/render-field :stars
   [field]
-  (let [value (or (:value field) 0)]
+  (let [value (or (some-> (:value field) to-int) 0)]
     [:div.js-starclicker
-     (f/render-field (assoc field :type :hidden))
+     (f/render-field (assoc field :type :hidden) (:value field))
      (for [i (range 5)]
        [:span {:class (str "glyphicon glyphicon-star" (when (>= i value) "-empty"))
                :data-st-value (str (inc i))
@@ -18,17 +28,30 @@
 ;; <https://github.com/jkk/formative/blob/master/src/formative/render/bootstrap3.cljx>
 (defmethod formative.render/render-form ::bootstrap3-horizontal
   [form-attrs fields opts]
-  [:form (assoc (dissoc form-attrs :renderer)
-           :class "form-horizontal"
-           :role "form")
-   (for [field fields
-         :let [field-id (formative.util/get-field-id field)
-               field (assoc field
-                       :id field-id
-                       :class "form-control")]]
-     [:div.form-group
-      [:label {:for field-id :class "col-sm-2 control-label"} (:label field)]
-      [:div.col-sm-10(formative.render/render-field field)]])])
+  (let [fields-by-name (into {} (for [f fields] [(:name f) f]))]
+    [:form (assoc (dissoc form-attrs :renderer)
+             :class "form-horizontal"
+             :role "form")
+     (when-let [problems (seq (:problems opts))]
+       [:div.alert.alert-danger {:role "alert"}
+        [:ul
+         (for [{:keys [keys msg]} problems
+               :let [labels
+                     (map #(formative.render/get-field-label (or (fields-by-name (name %))
+                                                                 {:name  %})) keys)]
+               :when msg]
+           [:li [:strong (string/join ", " labels) ": "] msg])]])
+     (for [field fields
+           :let [field-id (formative.util/get-field-id field)
+                 field (assoc field
+                         :id field-id
+                         :class (str "form-control "
+                                     ))]]
+       [:div {:class (str "form-group " (when (:problem field) "has-error "))}
+        [:label {:for field-id :class "col-sm-2 control-label"} (:label field)]
+        [:div.col-sm-10 (formative.render/render-field field)]])]))
+
+;;; FORMS
 
 (defn tasting-form
   [coffees]
@@ -43,4 +66,6 @@
                :placeholder "(valitse laatu)"}
               {:name "notes", :label "Muistiinpanot", :type :textarea}]
      :submit-label "Tallenna"
-     :renderer ::bootstrap3-horizontal}))
+     :renderer ::bootstrap3-horizontal
+     :validations
+     [[:required [:coffee_id :rating] "kenttä ei saa olla tyhjä"]]}))

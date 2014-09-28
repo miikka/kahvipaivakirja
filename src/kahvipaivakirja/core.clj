@@ -56,11 +56,16 @@
 
 (defn save-tasting
   [req]
-  (let [user-id (-> (current-user req) :id)
-        params (assoc (parse-params (forms/tasting-form (get-coffees)) (:params req))
-                 :user_id user-id)]
-    (create-tasting params)
-    (redirect req "/user/")))
+  (let [coffees (get-coffees)
+        user-id (:id (current-user req))]
+    (try
+      (let [params (assoc (parse-params (forms/tasting-form coffees) (:params req))
+                     :user_id user-id)]
+        (create-tasting params)
+        (redirect req "/user/"))
+      (catch clojure.lang.ExceptionInfo ex
+        (let [problems (:problems (ex-data ex))]
+          (render req views/new-tasting-page coffees (:params req) problems))))))
 
 ;;; ROUTES
 
@@ -76,7 +81,7 @@
        (friend/authorize #{:admin} (render req views/edit-roastery-page)))
   (GET "/tasting/" req
        (let [coffees (get-coffees)]
-         (friend/authenticated (render req views/new-tasting-page coffees))))
+         (friend/authenticated (render req views/new-tasting-page coffees {} []))))
   (POST "/tasting/" req (friend/authenticated (save-tasting req)))
   (GET "/tasting/:id/edit/" [id :as req]
        (friend/authenticated
