@@ -34,7 +34,9 @@
               "Kahvipäiväkirja")]
     [:meta {:charset "utf-8"}]
     [:meta {:name "viewport" :content "width=device-width, initial-scale=1"}]
-    (include-bootstrap)]
+    (include-bootstrap)
+    (include-js "/js/starclicker.js")
+    (include-css "/css/starclicker.css")]
    [:body
     [:nav.navbar.navbar-default {:role "navigation"}
      [:div.container-fluid
@@ -104,6 +106,15 @@
      (list (input "username" :text "Käyttäjänimi" username)
            (input "password" :password "Salasana"))
      [:button {:type "submit" :class "btn btn-default"} "Kirjaudu"]]]])
+
+(defn ^:private starclicker
+  [name value]
+  [:div.js-starclicker
+   [:input {:type "hidden" :name name :value value}]
+   (for [i (range 5)]
+     [:span {:class (str "glyphicon glyphicon-star" (when (>= i value) "-empty"))
+             :data-st-value (str (inc i))
+             :role "button"}])])
 
 ;;; PAGES
 
