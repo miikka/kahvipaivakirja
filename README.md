@@ -79,7 +79,7 @@ Tietokanta-asetukset tallenetaan tiedostoon `~/.kahvipaivakirja.edn`
 Testipalvelinta kannattaa ajaa REPLissä:
 
 	(use 'kahvipaivakirja.core 'ring.server.standalone)
-	(def s (serve app)
+	(def s (serve app))
 
 	;; Kun haluat pysäyttää palvelimen:
 	(.stop s)
