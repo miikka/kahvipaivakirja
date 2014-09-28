@@ -58,8 +58,6 @@
   [req]
   (let [params (parse-params (forms/tasting-form (get-roasteries) (get-coffees)) (:params req))
         new-tasting (create-tasting params)]
-    (prn :foo (:params req) new-tasting)
-    (assert new-tasting)
     (redirect req (str "/tasting/" (:id new-tasting) "/edit/"))))
 
 ;;; ROUTES
