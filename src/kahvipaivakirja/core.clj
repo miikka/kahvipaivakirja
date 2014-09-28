@@ -73,7 +73,7 @@
 (def app
   (-> main-routes
       (friend/authenticate
-       {:credential-fn (partial creds/bcrypt-credential-fn (partial get-user-by-name))
+       {:credential-fn (partial creds/bcrypt-credential-fn get-user-by-name)
         :login-uri "/login/"
         :workflows [(workflows/interactive-form)]})
       (handler/site)
