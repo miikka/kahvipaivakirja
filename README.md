@@ -13,6 +13,12 @@ held in Finnish, all the documentation is in Finnish, too.
 * Listaustesti: http://t-miikoski.users.cs.helsinki.fi/kahvipaivakirja/coffee/ (Tietojen haku tietokannasta on toteutettu tällä hetkellä vain tälle sivulle. Muut sivut on kovakoodattu.)
 * Kirjautumissivu: http://t-miikoski.users.cs.helsinki.fi/kahvipaivakirja/login/
 
+## Toteutetut tietokohteet
+
+Tällä hetkellä listaus-, lisäys-, muokkaus- ja poistotoiminnot on
+toteutettu maisteluille. Maistelulistaus näkyy käyttäjän omalla
+sivulla kirjautumisen jälkeen.
+
 ## Käyttäjätunnukset ja salasanat
 
 * Tavallinen käyttäjä: `Testaaja`/`kofeiini`

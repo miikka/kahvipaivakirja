@@ -265,11 +265,11 @@
    [:div.page-header [:h2 "Käyttäjä: " (:username ctx)]]
    [:div.row
     [:div.col-md-12 [:h3 "Omat suosikit"]]]
-   [:div.row
-    [:div.col-md-12
-     [:ol
-      [:li "Heart Coffee: Kenya Miiri"]
-      [:li "Drop Coffee: Marimira"]]]]
+   (comment [:div.row
+             [:div.col-md-12
+              [:ol
+               [:li "Heart Coffee: Kenya Miiri"]
+               [:li "Drop Coffee: Marimira"]]]])
    [:div.row
     [:div.col-md-12 [:h3 "Maisteluhistoria"]]]
    [:div.row
