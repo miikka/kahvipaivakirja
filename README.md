@@ -16,7 +16,7 @@ held in Finnish, all the documentation is in Finnish, too.
 ## Käyttäjätunnukset ja salasanat
 
 * Tavallinen käyttäjä: `Testaaja`/`kofeiini`
-* Ylläpitäjä: `Ylläpitaja`/`kofeiini`
+* Ylläpitäjä: `Yllapitaja`/`kofeiini`
 
 ### HTML-demosivut
 
