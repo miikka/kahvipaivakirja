@@ -7,7 +7,7 @@
    [clojure.java.io :as io]
    [endophile.core :refer [mp to-clj html-string]]
    [formative.core :as formative]
-   [hiccup.core :refer [html]]
+   [hiccup.core :refer [html h]]
    [hiccup.element :refer [image link-to]]
    [hiccup.page :refer [html5 include-css include-js]]
    [hiccup.util :refer [to-uri]]
@@ -285,7 +285,7 @@
       (for [tasting tastings]
         [:tr
          [:td (format-date (:created tasting))]
-         [:td (:location tasting)]
+         [:td (h (:location tasting))]
          [:td (roastery-link tasting)]
          [:td (coffee-link tasting)]
          [:td (:rating tasting)]
