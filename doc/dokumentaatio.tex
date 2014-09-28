@@ -6,6 +6,7 @@
 \usepackage[finnish]{babel}
 \usepackage{graphicx}
 \usepackage{tabularx}
+\usepackage{listings}
 
 \hyphenation{kahvi-päivä-kirjaan}
 
@@ -256,6 +257,65 @@ Alustava sivukartta on esitetty kuvassa \ref{fig:sivukartta}.
   \label{fig:sivukartta}
 \end{figure}
 
+\section{Asennustiedot}
 
+Sovelluksen asentamiseen tarvitaan Java, Make ja
+\href{http://leiningen.org/}{Leiningen-projektinhallintatyökalu}. Leiningen
+lataa ensimmäisellä ajokerralla automaattisesti kaikki tarvittavat
+kirjastot \texttt{project.clj}-tiedoston mukaisesti, Clojure
+mukaanlukien.
+
+Sovellus käyttää tietokantana PostgreSQL:ia. Kehitys- ja
+testauskäytössä voidaan käyttää HTTP-palvelimena Ring-kirjaston
+palvelinta, joka käynistetään komennolla \texttt{lein ring
+  server}. Tuotantokäytössä voidaan käyttää Tomcatia.
+
+\subsection{Asennuksen vaiheet}
+
+\begin{enumerate}
+\item Asenna ja konfiguroi Java, PostgreSQL ja Tomcat.
+\item Asenna Leiningen seuraamalla ohjeita osoitteessa \url{http://leiningen.org/#install}.
+\item Luo asetustiedosto \path{~/.kahvipaivakirja.edn}. Asetukset on
+  kuvattu osiossa \ref{sec:asetustiedosto}.
+\item Alusta tietokanta komennolla \texttt{make reset-db}.
+\item Luo WAR-tiedosto komennolla \texttt{make war}.
+\item Kopio WAR-tiedosto Tomcatin \texttt{webapps}-hakemistoon.
+\end{enumerate}
+
+\subsection{Asetustiedosto}
+\label{sec:asetustiedosto}
+
+Sovelluksen tietokanta-asetukset tallennetaan EDN-muodossa tiedostoon
+käyttäjän kotihakemistoon nimellä
+\path{.kahvipaivakirja.edn}. Asetukset tallennetaan
+clojure.java.jdbc-kirjaston tukemassa muodossa, joka on kuvattu
+sivulla
+\url{http://clojure-doc.org/articles/ecosystem/java_jdbc/home.html}. Esimerkiksi
+jos käytetään paikallista PostgreSQL-tietokantaa \texttt{tietokanta}
+käyttäjätunnuksella \texttt{kayttaja} ja salasanalla
+\texttt{salasana}, asetukset näyttävät tältä:
+
+\begin{lstlisting}[basicstyle=\ttfamily]
+{:classname "org.postgresql.Driver"
+ :subprotocol "postgresql"
+ :subname "//localhost:5432/tietokanta"
+ :user "kayttaja"
+ :password "salasana"}
+\end{lstlisting}
+
+\section{Käynistys- ja käyttöohje}
+
+Sovellus on asennettu \emph{users}-palvelimelle. Sovelluksen etusivu on osoitteessa \url{http://t-miikoski.users.cs.helsinki.fi/kahvipaivakirja/}. Testaamista varten on luotu seuraavat käyttäjätunnukset:
+
+\begin{center}
+\begin{tabularx}{\textwidth}{|X|X|}
+\hline
+Käyttäjänimi & Salasana \\
+\hline
+\texttt{Testaaja} & \texttt{kofeiini} \\
+\texttt{Yllapitaja} & \texttt{kofeiini} \\
+\hline
+\end{tabularx}
+\end{center}
 
 \end{document}
