@@ -98,7 +98,10 @@
 ;;; ROUTES
 
 (defroutes main-routes
-  (GET "/" req (render req views/front-page))
+  (GET "/" req
+       (let [roasteries (take 3 (get-roasteries))
+             coffees (take 3 (get-coffees))]
+         (render req views/front-page roasteries coffees)))
   (GET "/coffee/" req (render req views/coffee-ranking-page (get-coffees)))
   (GET "/coffee/:id/" [id :as req]
        (let [coffee (get-coffee-by-id (Integer/valueOf id))

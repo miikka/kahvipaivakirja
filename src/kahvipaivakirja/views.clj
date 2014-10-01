@@ -121,7 +121,7 @@
 
 ;;; PAGES
 
-(defn front-page [ctx]
+(defn front-page [ctx roasteries coffees]
   (base
    ctx :front-page "Etusivu"
    [:div.row
@@ -135,11 +135,13 @@
     [:div.col-md-6
      [:h3 "Parhaat kahvit"]
      [:ol
-      [:li "Hacienda la Esmeralda (Tim Wendelboe)"]]]
+      (for [coffee coffees]
+        [:li (coffee-link coffee) " (" (roastery-link coffee) ")"])]]
     [:div.col-md-6
      [:h3 "Parhaat paahtimot"]
      [:ol
-      [:li "Tim Wendelboe"]]]]))
+      (for [roastery roasteries]
+        [:li (roastery-link roastery)])]]]))
 
 (defn login-page [ctx show-error username]
   (base
