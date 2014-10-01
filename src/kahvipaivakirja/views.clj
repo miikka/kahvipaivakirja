@@ -33,7 +33,7 @@
   (html5 {:lang "fi"}
    [:head
     [:title (if title
-              (str title " - Kahvipäiväkirja")
+              (h (str title " - Kahvipäiväkirja"))
               "Kahvipäiväkirja")]
     [:meta {:charset "utf-8"}]
     [:meta {:name "viewport" :content "width=device-width, initial-scale=1"}]
@@ -94,11 +94,11 @@
 
 (defn ^:private coffee-link
   [coffee & args]
-  (apply link-to (str "/coffee/" (coffee :coffee_id) "/") (coffee :coffee_name)))
+  (apply link-to (str "/coffee/" (coffee :coffee_id) "/") (h (coffee :coffee_name))))
 
 (defn ^:private roastery-link
   [coffee & args]
-  (apply link-to (str "/roastery/" (coffee :roastery_id) "/") (coffee :roastery_name)))
+  (apply link-to (str "/roastery/" (coffee :roastery_id) "/") (h (coffee :roastery_name))))
 
 (defn ^:private login-form
   [username]
@@ -166,19 +166,22 @@
     [:div.col-md-12
      (render-form (forms/tasting-form coffees) values problems)]]))
 
+(defn ^:private format-count
+  [n]
+  (cl-format nil (str "~[ei ole vielä maisteltu~;on maisteltu kerran"
+                      "~:;on maisteltu ~:*~S kertaa~]. ") n))
+
 (defn coffee-info-page [ctx coffee tastings]
   (base
    ctx :coffee-info (str (:roastery_name coffee) ": " (:coffee_name coffee))
-   [:div.page-header [:h1 (list (roastery-link coffee) ": " (:coffee_name coffee))]]
+   [:div.page-header [:h1 (list (roastery-link coffee) ": " (h (:coffee_name coffee)))]]
 
    [:div.row
     [:div.col-md-12
      [:p
-      (cl-format nil (str "Kahvia ~A ~[ei ole vielä maisteltu~;on maisteltu kerran"
-                          "~:;on maisteltu ~:*~S kertaa~]. ")
-                 (:coffee_name coffee) (:tasting_count coffee))
+      "Kahvia " (:coffee_name coffee) " " (format-count (:tasting_count coffee))
       (when (pos? (:tasting_count coffee))
-        (list "Ensimmäisen kerran "
+        (list "Ensimmäinen kerta "
               (format-date (:first_tasting coffee)) "."))]
      (when (:admin ctx) (link-button "/coffee/1/edit/" "Muokkaa"))]]
 
@@ -199,28 +202,35 @@
          [:td (h (:user_name tasting))]
          [:td (:rating tasting)]])]]]))
 
-(defn roastery-info-page [ctx]
+(defn roastery-info-page [ctx roastery coffees]
   (base
-   ctx :roastery-info "Drop Coffee"
-   [:div.page-header [:h1 "Drop Coffee"]]
+   ctx :roastery-info (:roastery_name roastery)
+   [:div.page-header [:h1 (h (:roastery_name roastery))]]
    [:div.row
     [:div.col-md-12
-     [:p "Paahtimon Drop Coffee kahveja on maisteltu yhden kerran. Ensimmäinen kerta 13.9.2014."]
+     [:p
+      "Paahtimon " (:roastery_name roastery) " kahveja "
+      (format-count (:tasting_count roastery))
+      (when (pos? (:tasting_count roastery))
+        (list "Ensimmäinen kerta " (format-date (:first_tasting roastery)) "."))]
      (when (:admin ctx) (link-button "/roastery/1/edit/" "Muokkaa"))]]
-    [:div.row
-     [:div.col-md-12
-      [:h3 "Kahvit"]]]
-    [:div.row
-     [:div.col-md-12
-      [:table.table.table-hover
-       [:tr
-        [:th "Kahvi"]
-        [:th "Keskiarvosana"]
-        [:th "Maisteluja"]]
-       [:tr
-        [:td (link-to "/coffee/1/" "Marimira")]
-        [:td "4"]
-        [:td "1"]]]]]))
+   [:div.row
+    [:div.col-md-12
+     [:h3 "Kahvit"]]]
+   [:div.row
+    [:div.col-md-12
+     [:table.table.table-hover
+      [:tr
+       [:th "Kahvi"]
+       [:th "Keskiarvosana"]
+       [:th "Maisteluja"]]
+      (for [coffee coffees]
+        [:tr
+         [:td (coffee-link coffee)]
+         [:td (if-let [rating (:rating_avg coffee)]
+                (format "%.2f" rating)
+                "-")]
+         [:td (:rating_count coffee)]])]]]))
 
 (defn coffee-ranking-page [ctx coffees]
   (base

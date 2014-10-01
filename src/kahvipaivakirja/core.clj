@@ -107,7 +107,10 @@
   (GET "/coffee/:id/edit/" req
        (friend/authorize #{:admin} (render req views/edit-coffee-page)))
   (GET "/roastery/" req (render req views/roastery-ranking-page (get-roasteries)))
-  (GET "/roastery/:id/" req (render req views/roastery-info-page))
+  (GET "/roastery/:id/" [id :as req]
+       (let [roastery (get-roastery-by-id (Integer/valueOf id))
+             coffees (get-coffees-by-roastery roastery)]
+         (render req views/roastery-info-page roastery coffees)))
   (GET "/roastery/:id/edit/" req
        (friend/authorize #{:admin} (render req views/edit-roastery-page)))
   (GET "/tasting/" req
