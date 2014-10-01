@@ -103,7 +103,7 @@
   (GET "/coffee/:id/" req (render req views/coffee-info-page))
   (GET "/coffee/:id/edit/" req
        (friend/authorize #{:admin} (render req views/edit-coffee-page)))
-  (GET "/roastery/" req (render req views/roastery-ranking-page))
+  (GET "/roastery/" req (render req views/roastery-ranking-page (get-roasteries)))
   (GET "/roastery/:id/" req (render req views/roastery-info-page))
   (GET "/roastery/:id/edit/" req
        (friend/authorize #{:admin} (render req views/edit-roastery-page)))

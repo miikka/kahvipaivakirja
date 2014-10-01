@@ -233,7 +233,7 @@
               "-")]
        [:td (coffee :rating_count)]])]))
 
-(defn roastery-ranking-page [ctx]
+(defn roastery-ranking-page [ctx roasteries]
   (base
    ctx :roastery-ranking "Parhaat paahtimot"
    [:div.page-header [:h2 "Parhaat paahtimot"]]
@@ -243,21 +243,14 @@
      [:th "Kahveja"]
      [:th "Paras kahvi"]
      [:th "Keskiarvosana"]]
-    [:tr
-     [:td "Tim Wendelboe"]
-     [:td "1"]
-     [:td "Hacienda la Esmeralda"]
-     [:td "5"]]
-    [:tr
-     [:td (link-to "/roastery/1/" "Drop Coffee")]
-     [:td "1"]
-     [:td (link-to "/coffee/1/" "Marimira")]
-     [:td "4"]]
-    [:tr
-     [:td "Paulig"]
-     [:td "1"]
-     [:td "Juhla Mokka"]
-     [:td "2.7"]]]))
+    (for [roastery roasteries]
+      [:tr
+       [:td (roastery-link roastery)]
+       [:td (:coffee_count roastery)]
+       [:td (coffee-link roastery)]
+       [:td (if-let [rating (:rating_avg roastery)]
+              (format "%.2f" rating)
+              "-")]])]))
 
 (defn profile-page [ctx tastings]
   (base

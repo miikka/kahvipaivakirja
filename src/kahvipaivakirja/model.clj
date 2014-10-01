@@ -15,6 +15,7 @@
 (def db-spec (read-db-spec))
 
 (defquery get-coffees-query "sql/get-coffees.sql")
+(defquery get-best-coffee-by-roastery-query "sql/get-best-coffee-by-roastery.sql")
 (defquery get-user-by-name-query "sql/get-user-by-name.sql")
 (defquery get-tastings-by-user-query "sql/get-tastings-by-user.sql")
 (defquery get-tasting-by-id-query "sql/get-tasting-by-id.sql")
@@ -24,7 +25,17 @@
 (defquery delete-tasting-query! "sql/delete-tasting.sql")
 
 (defn get-coffees [] (get-coffees-query db-spec))
-(defn get-roasteries [] (get-roasteries-query db-spec))
+
+(defn get-best-coffee-by-roastery [roastery]
+  (first (get-best-coffee-by-roastery-query db-spec (:roastery_id roastery))))
+
+(defn get-roasteries []
+  ;; XXX(miikka) Can this be done with one database query?
+  (for [roastery (get-roasteries-query db-spec)
+        :let [coffee (get-best-coffee-by-roastery roastery)]]
+    (assoc roastery
+      :coffee_id (:coffee_id coffee)
+      :coffee_name (:coffee_name coffee))))
 
 (defn create-tasting [{:keys [type location rating notes coffee_id user_id]}]
   (create-tasting-query<! db-spec
