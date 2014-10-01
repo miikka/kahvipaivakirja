@@ -9,4 +9,4 @@ SELECT
 FROM coffees
 INNER JOIN roasteries
 ON roasteries.id = coffees.roastery_id
-ORDER BY rating_avg ASC;
+ORDER BY rating_avg DESC NULLS LAST;
