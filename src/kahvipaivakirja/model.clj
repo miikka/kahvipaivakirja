@@ -14,15 +14,19 @@
 
 (def db-spec (read-db-spec))
 
+(defquery get-coffee-by-id-query "sql/get-coffee-by-id.sql")
 (defquery get-coffees-query "sql/get-coffees.sql")
 (defquery get-best-coffee-by-roastery-query "sql/get-best-coffee-by-roastery.sql")
 (defquery get-user-by-name-query "sql/get-user-by-name.sql")
 (defquery get-tastings-by-user-query "sql/get-tastings-by-user.sql")
+(defquery get-tastings-by-coffee-query "sql/get-tastings-by-coffee.sql")
 (defquery get-tasting-by-id-query "sql/get-tasting-by-id.sql")
 (defquery get-roasteries-query "sql/get-roasteries.sql")
 (defquery create-tasting-query<! "sql/create-tasting.sql")
 (defquery update-tasting-query! "sql/update-tasting.sql")
 (defquery delete-tasting-query! "sql/delete-tasting.sql")
+
+(defn get-coffee-by-id [id](first (get-coffee-by-id-query db-spec id)))
 
 (defn get-coffees [] (get-coffees-query db-spec))
 
@@ -36,6 +40,7 @@
     (assoc roastery
       :coffee_id (:coffee_id coffee)
       :coffee_name (:coffee_name coffee))))
+
 
 (defn create-tasting [{:keys [type location rating notes coffee_id user_id]}]
   (create-tasting-query<! db-spec
@@ -68,6 +73,9 @@
 
 (defn get-tastings-by-user [user]
   (get-tastings-by-user-query db-spec (:id user)))
+
+(defn get-tastings-by-coffee [coffee]
+  (get-tastings-by-coffee-query db-spec (:coffee_id coffee)))
 
 (defn get-tasting-by-id [tasting-id]
   (first (get-tasting-by-id-query db-spec tasting-id)))

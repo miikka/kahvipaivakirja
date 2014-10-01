@@ -5,6 +5,7 @@
   take a context map as the first parameter. (See kahvipaivakirja.core/make-context.)"
   (:require
    [clojure.java.io :as io]
+   [clojure.pprint :refer [cl-format]]
    [endophile.core :refer [mp to-clj html-string]]
    [formative.core :as formative]
    [hiccup.core :refer [html h]]
@@ -165,17 +166,26 @@
     [:div.col-md-12
      (render-form (forms/tasting-form coffees) values problems)]]))
 
-(defn coffee-info-page [ctx]
+(defn coffee-info-page [ctx coffee tastings]
   (base
-   ctx :coffee-info "Drop Coffee: Marimira"
-   [:div.page-header [:h1 (list (link-to "/roastery/1/" "Drop Coffee") ": Marimira")]]
+   ctx :coffee-info (str (:roastery_name coffee) ": " (:coffee_name coffee))
+   [:div.page-header [:h1 (list (roastery-link coffee) ": " (:coffee_name coffee))]]
+
    [:div.row
     [:div.col-md-12
-     [:p "Kahvia Marimira on maisteltu yhden kerran. Ensimmäinen kerta 13.9.2014."]
+     [:p
+      (cl-format nil (str "Kahvia ~A ~[ei ole vielä maisteltu~;on maisteltu kerran"
+                          "~:;on maisteltu ~:*~S kertaa~]. ")
+                 (:coffee_name coffee) (:tasting_count coffee))
+      (when (pos? (:tasting_count coffee))
+        (list "Ensimmäisen kerran "
+              (format-date (:first_tasting coffee)) "."))]
      (when (:admin ctx) (link-button "/coffee/1/edit/" "Muokkaa"))]]
+
    [:div.row
     [:div.col-md-12
      [:h3 "Maisteluhistoria"]]]
+
    [:div.row
     [:div.col-md-12
      [:table.table.table-hover
@@ -183,10 +193,11 @@
        [:th "Päiväys"]
        [:th "Käyttäjä"]
        [:th "Arvosana"]]
-      [:tr
-       [:td "13.9.2014"]
-       [:td "Miikka"]
-       [:td "4"]]]]]))
+      (for [tasting tastings]
+        [:tr
+         [:td (format-date (:created tasting))]
+         [:td (h (:user_name tasting))]
+         [:td (:rating tasting)]])]]]))
 
 (defn roastery-info-page [ctx]
   (base

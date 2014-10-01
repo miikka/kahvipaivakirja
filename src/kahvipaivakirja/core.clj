@@ -100,7 +100,10 @@
 (defroutes main-routes
   (GET "/" req (render req views/front-page))
   (GET "/coffee/" req (render req views/coffee-ranking-page (get-coffees)))
-  (GET "/coffee/:id/" req (render req views/coffee-info-page))
+  (GET "/coffee/:id/" [id :as req]
+       (let [coffee (get-coffee-by-id (Integer/valueOf id))
+             tastings (get-tastings-by-coffee coffee)]
+        (render req views/coffee-info-page coffee tastings)))
   (GET "/coffee/:id/edit/" req
        (friend/authorize #{:admin} (render req views/edit-coffee-page)))
   (GET "/roastery/" req (render req views/roastery-ranking-page (get-roasteries)))
