@@ -109,6 +109,14 @@
           (let [problems (:problems (ex-data ex))]
             (render req views/edit-coffee-page (:params req) roasteries problems)))))))
 
+(defn delete-coffee
+  [req coffee-id]
+  ;; XXX(miikka) Should check if admin
+  (let [coffee (get-coffee-by-id coffee-id)]
+    (when coffee
+      (delete-coffee! coffee-id)
+      (redirect req "/coffee/"))))
+
 ;;; ROUTES
 
 (defroutes main-routes
@@ -127,6 +135,8 @@
          (friend/authorize #{:admin} (render req views/edit-coffee-page coffee roasteries {}))))
   (POST "/coffee/:id/edit/" [id :as req]
         (friend/authenticated (update-coffee- req (Integer/valueOf id))))
+  (POST "/coffee/:id/delete/" [id :as req]
+        (friend/authenticated (delete-coffee req (Integer/valueOf id))))
   (GET "/roastery/" req (render req views/roastery-ranking-page (get-roasteries)))
   (GET "/roastery/:id/" [id :as req]
        (let [roastery (get-roastery-by-id (Integer/valueOf id))

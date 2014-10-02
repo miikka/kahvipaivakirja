@@ -5,4 +5,4 @@ SELECT
 	(SELECT COUNT(rating) FROM tastings WHERE tastings.coffee_id = coffees.id) AS rating_count
 FROM coffees
 WHERE coffees.roastery_id = ?
-ORDER BY rating DESC NULLS LAST
+ORDER BY rating_avg DESC NULLS LAST

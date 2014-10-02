@@ -89,8 +89,8 @@
 (defn ^:private submit-button [text]
   [:button {:type "submit" :class "btn btn-default"} text])
 
-(defn ^:private link-button [target text]
-  [:a {:href (to-uri target) :class "btn btn-primary" :role "button"} text])
+(defn ^:private link-button [target text & [btn-class]]
+  [:a {:href (to-uri target) :class (str "btn btn-xs " (or btn-class "btn-primary")) :role "button"} text])
 
 (defn ^:private coffee-link
   [coffee & args]
@@ -155,10 +155,10 @@
 (defn ^:private render-form [form values & [problems]]
   (formative/render-form (assoc form :values values :problems problems)))
 
-(defn ^:private delete-button [tasting]
-  [:form {:method "POST" :action (to-uri (str "/tasting/" (:id tasting) "/delete/"))
+(defn ^:private delete-button [tasting & [type]]
+  [:form {:method "POST" :action (to-uri (str "/" (or type "tasting") "/" (:id tasting) "/delete/"))
           :style "display: inline;"}
-   [:button {:type "submit" :class "btn btn-primary btn-xs"} "Poista"]])
+   [:button {:type "submit" :class "btn btn-danger btn-xs"} "Poista"]])
 
 (defn new-tasting-page [ctx coffees values problems]
   (base
@@ -185,8 +185,9 @@
       (when (pos? (:tasting_count coffee))
         (list "Ensimmäinen kerta "
               (format-date (:first_tasting coffee)) "."))]
-     (when (:admin ctx) (link-button (format "/coffee/%d/edit/" (:coffee_id coffee)) "Muokkaa"))]]
-
+     (when (:admin ctx)
+       (list (link-button (format "/coffee/%d/edit/" (:coffee_id coffee)) "Muokkaa") " "
+             (delete-button {:id (:coffee_id coffee)} "coffee")))]]
    [:div.row
     [:div.col-md-12
      [:h3 "Maisteluhistoria"]]]
@@ -307,7 +308,7 @@
          [:td (:rating tasting)]
          [:td (link-to {:class "btn btn-xs btn-default" :role "button"}
                        (str "/tasting/" (:id tasting) "/edit/") "Muokkaa")
-          (delete-button tasting)]])]]]))
+          " " (delete-button tasting)]])]]]))
 
 (defn edit-tasting-page [ctx coffees tasting]
   (base
