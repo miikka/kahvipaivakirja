@@ -185,7 +185,7 @@
       (when (pos? (:tasting_count coffee))
         (list "Ensimmäinen kerta "
               (format-date (:first_tasting coffee)) "."))]
-     (when (:admin ctx) (link-button "/coffee/1/edit/" "Muokkaa"))]]
+     (when (:admin ctx) (link-button (format "/coffee/%d/edit/" (:coffee_id coffee)) "Muokkaa"))]]
 
    [:div.row
     [:div.col-md-12
@@ -318,16 +318,12 @@
    [:div.row
     [:div.col-md-12 (render-form (forms/tasting-form coffees) tasting)]]))
 
-(defn edit-coffee-page [ctx]
+(defn edit-coffee-page [ctx coffee roasteries problems]
   (base
-   ctx :edit-coffee "Muokkaa kahvia"
-   [:div.page-header [:h2 "Muokkaa kahvia Marimira"]]
-   [:form {:role "form"}
-    [:div.row
-     [:div.col-md-6 (input "coffee-name" :text "Nimi" "Marimira")]
-     [:div.col-md-6 (select "coffee-roastery" "Valitse paahtimo"
-                             ["Drop Coffee" "Tim Wendelboe" "Square Mile Coffee"])]]
-    [:div.row [:div.col-md-12 (submit-button "Tallenna")]]]
+   ctx :edit-coffee (str "Muokkaa kahvia " (:coffee_name coffee))
+   [:div.page-header [:h2 "Muokkaa kahvia " (h (:coffee_name coffee))]]
+   [:div.row
+    [:div.col-md-12 (render-form (forms/coffee-form roasteries) coffee problems)]]
    [:div.row
     [:div.col-md-12 [:h2 "Yhdistä toiseen kahviin"]]]
    [:form {:role "form"}

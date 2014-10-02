@@ -69,3 +69,14 @@
      :renderer ::bootstrap3-horizontal
      :validations
      [[:required [:coffee_id :rating] "kenttä ei saa olla tyhjä"]]}))
+
+(defn coffee-form
+  [roasteries]
+  (let [roastery-opts (map (juxt :roastery_id :roastery_name) roasteries)]
+    {:fields [{:name "coffee_name", :label "Nimi", :type :text}
+              {:name "roastery_id", :label "Paahtimo", :type :select, :datatype :int,
+               :options roastery-opts, :placeholder "(valitse paahtimo)"}]
+     :submit-label "Tallenna"
+     :renderer ::bootstrap3-horizontal
+     :validations
+     [[:required [:coffee_name :roastery_id] "kenttä ei saa olla tyhjä"]]}))

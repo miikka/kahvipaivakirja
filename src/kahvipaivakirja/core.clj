@@ -95,6 +95,20 @@
           (redirect req "/user/"))
         (friend/throw-unauthorized (friend/identity req) {})))))
 
+(defn update-coffee-
+  [req coffee-id]
+  ;; XXX(miikka) Should check if admin
+  (let [roasteries (get-roasteries)
+        coffee (get-coffees)]
+    (when coffee
+      (try
+        (let [params (parse-params (forms/coffee-form roasteries) (:params req))]
+          (update-coffee! coffee-id params)
+          (redirect req (format "/coffee/%d/" coffee-id)))
+        (catch clojure.lang.ExceptionInfo ex
+          (let [problems (:problems (ex-data ex))]
+            (render req views/edit-coffee-page (:params req) roasteries problems)))))))
+
 ;;; ROUTES
 
 (defroutes main-routes
@@ -107,8 +121,12 @@
        (let [coffee (get-coffee-by-id (Integer/valueOf id))
              tastings (get-tastings-by-coffee coffee)]
         (render req views/coffee-info-page coffee tastings)))
-  (GET "/coffee/:id/edit/" req
-       (friend/authorize #{:admin} (render req views/edit-coffee-page)))
+  (GET "/coffee/:id/edit/" [id :as req]
+       (let [coffee (get-coffee-by-id (Integer/valueOf id))
+             roasteries (get-roasteries)]
+         (friend/authorize #{:admin} (render req views/edit-coffee-page coffee roasteries {}))))
+  (POST "/coffee/:id/edit/" [id :as req]
+        (friend/authenticated (update-coffee- req (Integer/valueOf id))))
   (GET "/roastery/" req (render req views/roastery-ranking-page (get-roasteries)))
   (GET "/roastery/:id/" [id :as req]
        (let [roastery (get-roastery-by-id (Integer/valueOf id))
