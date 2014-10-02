@@ -239,9 +239,6 @@
   (base
    ctx :coffee-ranking "Parhaat kahvit"
    [:div.page-header [:h2 "Parhaat kahvit"]]
-   [:div.row
-    [:div.col-md-12
-     [:p "HUOM! Tämän sivun sisältö tulee tietokannasta, mutta kaikkien muiden sivujen sisältö on toistaiseksi kovakoodattu. Siksi alla olevat linkit eivät toimi oikein."]]]
    [:table.table.table-hover
     [:tr
      [:th "Kahvi"]
