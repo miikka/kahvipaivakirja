@@ -27,6 +27,7 @@
 (defquery create-tasting-query<! "sql/create-tasting.sql")
 (defquery update-tasting-query! "sql/update-tasting.sql")
 (defquery delete-tasting-query! "sql/delete-tasting.sql")
+(defquery create-coffee-query<! "sql/create-coffee.sql")
 (defquery update-coffee-query! "sql/update-coffee.sql")
 (defquery delete-coffee-query! "sql/delete-coffee.sql")
 
@@ -59,6 +60,11 @@
                           notes
                           coffee_id
                           user_id))
+
+(defn create-coffee [{:keys [name roastery_id]}]
+  (create-coffee-query<! db-spec
+                         name
+                         roastery_id))
 
 (defn update-tasting [id {:keys [type location rating notes coffee_id]}]
   (update-tasting-query! db-spec

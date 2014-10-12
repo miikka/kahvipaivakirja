@@ -95,6 +95,17 @@
           (redirect req "/user/"))
         (friend/throw-unauthorized (friend/identity req) {})))))
 
+(defn save-coffee
+  [req]
+  (let [roasteries (get-roasteries)]
+   (try
+     (let [params (assoc (parse-params (forms/coffee-form roasteries) (:params req)))]
+       (create-coffee params)
+       (redirect req "/coffee/"))
+     (catch clojure.lang.ExceptionInfo ex
+       (let [problems (:problems (ex-data ex))]
+         (pr-str problems))))))
+
 (defn update-coffee-
   [req coffee-id]
   ;; XXX(miikka) Should check if admin
@@ -133,6 +144,7 @@
        (let [coffee (get-coffee-by-id (Integer/valueOf id))
              roasteries (get-roasteries)]
          (friend/authorize #{:admin} (render req views/edit-coffee-page coffee roasteries {}))))
+  (POST "/coffee/" req (friend/authenticated (save-coffee req)))
   (POST "/coffee/:id/edit/" [id :as req]
         (friend/authenticated (update-coffee- req (Integer/valueOf id))))
   (POST "/coffee/:id/delete/" [id :as req]
