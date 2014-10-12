@@ -80,3 +80,11 @@
      :renderer ::bootstrap3-horizontal
      :validations
      [[:required [:coffee_name :roastery_id] "kenttä ei saa olla tyhjä"]]}))
+
+(defn roastery-form
+  []
+  {:fields [{:name "roastery_name" :label "Nimi" :type :text}]
+   :submit-label "Tallenna"
+   :renderer ::bootstrap3-horizontal
+   :validations
+   [[:required [:roastery_name] "kenttä ei saa olla tyhjä"]]})

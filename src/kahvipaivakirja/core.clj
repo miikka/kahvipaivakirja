@@ -1,7 +1,8 @@
 (ns kahvipaivakirja.core
   (:use
    compojure.core
-   kahvipaivakirja.model)
+   kahvipaivakirja.model
+   kahvipaivakirja.resources)
   (:require
    [cemerick.friend :as friend]
    [cemerick.friend.credentials :as creds]
@@ -110,7 +111,7 @@
   [req coffee-id]
   ;; XXX(miikka) Should check if admin
   (let [roasteries (get-roasteries)
-        coffee (get-coffees)]
+        coffee (get-coffee-by-id coffee-id)]
     (when coffee
       (try
         (let [params (parse-params (forms/coffee-form roasteries) (:params req))]
@@ -128,6 +129,32 @@
       (delete-coffee! coffee-id)
       (redirect req "/coffee/"))))
 
+;;; THE RESOURCE WAY OF DOING THINGS
+
+(defn update-resource
+  [req resource]
+  (when (exists? resource)
+    (try
+      (let [params (parse-params (form-of resource) (:params req))]
+        (update resource params)
+        (redirect req (format "/%d/" (id-of resource))))
+      (catch clojure.lang.ExceptionInfo ex
+        (let [problems (:problems (ex-data ex))]
+          (render req (edit-view resource) (:params req) problems))))))
+
+(defn delete-resource
+  [req resource]
+  (when (exists? resource)
+    (delete resource)
+    (redirect req "/")))
+
+(defn resource-route [getter]
+  (let [g (fn [id] (getter (Integer/valueOf id)))]
+    (routes
+     (GET "/:id/edit/" [id :as req] (when-let [res (g id)] (render req (edit-view res) res {})))
+     (POST "/:id/edit/" [id :as req] (update-resource req (g id)))
+     (POST "/:id/delete/" [id :as req] (delete-resource req (g id))))))
+
 ;;; ROUTES
 
 (defroutes main-routes
@@ -143,19 +170,22 @@
   (GET "/coffee/:id/edit/" [id :as req]
        (let [coffee (get-coffee-by-id (Integer/valueOf id))
              roasteries (get-roasteries)]
-         (friend/authorize #{:admin} (render req views/edit-coffee-page coffee roasteries {}))))
+         (when coffee
+           (friend/authorize #{:admin} (render req views/edit-coffee-page coffee roasteries {})))))
   (POST "/coffee/" req (friend/authenticated (save-coffee req)))
   (POST "/coffee/:id/edit/" [id :as req]
         (friend/authenticated (update-coffee- req (Integer/valueOf id))))
   (POST "/coffee/:id/delete/" [id :as req]
         (friend/authenticated (delete-coffee req (Integer/valueOf id))))
+
   (GET "/roastery/" req (render req views/roastery-ranking-page (get-roasteries)))
   (GET "/roastery/:id/" [id :as req]
        (let [roastery (get-roastery-by-id (Integer/valueOf id))
              coffees (get-coffees-by-roastery roastery)]
          (render req views/roastery-info-page roastery coffees)))
-  (GET "/roastery/:id/edit/" req
-       (friend/authorize #{:admin} (render req views/edit-roastery-page)))
+
+  (context "/roastery" [] (resource-route get-Roastery))
+
   (GET "/tasting/" req
        (let [coffees (get-coffees)]
          (friend/authenticated (render req views/new-tasting-page coffees {} []))))

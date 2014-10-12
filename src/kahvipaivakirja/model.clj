@@ -30,8 +30,10 @@
 (defquery create-coffee-query<! "sql/create-coffee.sql")
 (defquery update-coffee-query! "sql/update-coffee.sql")
 (defquery delete-coffee-query! "sql/delete-coffee.sql")
+(defquery update-roastery-query! "sql/update-roastery.sql")
+(defquery delete-roastery-query! "sql/delete-roastery.sql")
 
-(defn get-coffee-by-id [id](first (get-coffee-by-id-query db-spec id)))
+(defn get-coffee-by-id [id] (first (get-coffee-by-id-query db-spec id)))
 
 (defn get-coffees [] (get-coffees-query db-spec))
 
@@ -100,3 +102,9 @@
 
 (defn delete-coffee! [coffee-id]
   (delete-coffee-query! db-spec coffee-id))
+
+(defn update-roastery! [roastery-id {:keys [roastery_name]}]
+  (update-roastery-query! db-spec roastery_name roastery-id))
+
+(defn delete-roastery! [roastery-id]
+  (delete-roastery-query! db-spec roastery-id))

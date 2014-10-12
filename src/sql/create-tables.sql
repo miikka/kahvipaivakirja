@@ -18,7 +18,7 @@ CREATE TABLE coffees
 (
 	id SERIAL PRIMARY KEY,
 	name VARCHAR(255) UNIQUE,
-	roastery_id INTEGER REFERENCES roasteries(id)
+	roastery_id INTEGER REFERENCES roasteries(id) ON DELETE CASCADE
 );
 
 CREATE TABLE tastings

@@ -216,7 +216,9 @@
       (format-count (:tasting_count roastery))
       (when (pos? (:tasting_count roastery))
         (list "Ensimmäinen kerta " (format-date (:first_tasting roastery)) "."))]
-     (when (:admin ctx) (link-button "/roastery/1/edit/" "Muokkaa"))]]
+     (when (:admin ctx)
+       (list (link-button (format "/roastery/%d/edit/" (:roastery_id roastery)) "Muokkaa") " "
+             (delete-button {:id (:roastery_id roastery)} "roastery")))]]
    [:div.row
     [:div.col-md-12
      [:h3 "Kahvit"]]]
@@ -330,14 +332,12 @@
                              ["Drop Coffee / Marimira" "Square Mile Coffee / Magdalena"])]]
     [:div.row [:div.col-md-12 (submit-button "Yhdistä")]]]))
 
-(defn edit-roastery-page [ctx]
+(defn edit-roastery-page [ctx roastery problems]
   (base
-   ctx :edit-roastery "Muookkaa paahtimoa"
-   [:div.page-header [:h2 "Muokkaa paahtimoa Drop Coffee"]]
-   [:form {:role "form"}
-    [:div.row
-     [:div.col-md-12 (input "roastery-name" :text "Nimi" "Drop Coffee")]]
-    [:div.row [:div.col-md-12 (submit-button "Tallenna")]]]
+   ctx :edit-roastery (str "Muokkaa paahtimoa " (:roastery_name roastery))
+   [:div.page-header [:h2 "Muokkaa paahtimoa " (h (:roastery_name roastery))]]
+   [:div.row
+    [:div.col-md-12 (render-form (forms/roastery-form) roastery problems)]]
    [:div.row
     [:div.col-md-12 [:h2 "Yhdistä toiseen paahtimoon"]]]
    [:form {:role "form"}
