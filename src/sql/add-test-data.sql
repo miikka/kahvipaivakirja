@@ -40,6 +40,9 @@ INSERT INTO coffees (name, roastery_id)
 VALUES ('Marimira', (SELECT id FROM roasteries WHERE name = 'Drop Coffee'));
 
 INSERT INTO coffees (name, roastery_id)
+VALUES ('Helsar de Zarcero', (SELECT id FROM roasteries WHERE name = 'Drop Coffee'));
+
+INSERT INTO coffees (name, roastery_id)
 VALUES ('Magdalena', (SELECT id FROM roasteries WHERE name = 'Square Mile Coffee'));
 
 INSERT INTO coffees (name, roastery_id)
