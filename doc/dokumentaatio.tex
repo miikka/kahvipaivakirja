@@ -318,4 +318,33 @@ Käyttäjänimi & Salasana \\
 \end{tabularx}
 \end{center}
 
+
+\section{Testaus, tunnetut puutteet ja jatkokehitysideat}
+
+Järjestelmää on testattu Firefox- ja Safari-selaimilla sekä iPhonen
+Mobile Safari -selaimella. Mitään erityistä testausprosessia ei
+ole. Normaalin käytön lisäksi olen testannut lisäksi manipuloimalla
+lomakkeiden syötteitä selaimen kehitystyökaluilla. Automaattisia
+testejä ei ole käytössä.
+
+\subsection{Tunnetut puutteet ja kehityskohteet}
+
+\begin{itemize}
+\item Kahvin ja paahtimon voi yrittää yhdistää itsensä kanssa. Mitään
+  ei tapahdu, jos niin tekee, mutta tämän ei pitäisi olla edes
+  mahdollista käyttöliittymän kautta.
+\item Kahvin ja paahtimon lisäämisen käyttöliittymä on jokseenkin
+  kömpelö. Maistelunlisäyslomake voisi tarjota mahdollisuuden lisätä
+  uusi kahvi ja paahtimo suoraan samalta sivulta.
+\item Maistelukokemuksen katselusivu on samalla muokkaussivu. Tämä
+  tuntuu rumalta.
+\item Minkäänlaisia työkaluja käyttäjien lisäämiseen tai muokkaamiseen
+  ei ole. Esimerkiksi jos käyttäjä unohtaa salasanansa, ylläpitäjän on
+  asetettava se uudestaan ajamalla SQL-komentoja.
+\item Yksikkötestejä ei ole. Niistä olisi ollut kehityksen aikana
+  varmasti iloa.
+\end{itemize}
+
+
+
 \end{document}
