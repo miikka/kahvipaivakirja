@@ -46,7 +46,7 @@
 
 (defn save-new [req]
   (try
-    (let [params (parse-roastery)]
+    (let [params (parse-roastery req)]
       (let [roastery (create-roastery<! params)]
         (redirect req (roastery-url roastery))))
     (catch clojure.lang.ExceptionInfo ex
@@ -63,7 +63,9 @@
     (let [roasteries (get-roasteries)]
       (try
         (let [params (parse-params (forms/roastery-merge-form roasteries) (:params req))]
-          (merge-roasteries! (:roastery_id params) (:roastery_id roastery))
+          ;; XXX(miikka) The UI should not allow merging roastery with itself.
+          (when (not= (:roastery_id params) (:roastery_id roastery))
+            (merge-roasteries! (:roastery_id params) (:roastery_id roastery)))
           (redirect req (roastery-url params)))
         (catch clojure.lang.ExceptionInfo ex
           (let [problems (:problems (ex-data ex))]

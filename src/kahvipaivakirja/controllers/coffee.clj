@@ -67,7 +67,9 @@
           roasteries (get-roasteries)]
       (try
         (let [params (parse-params (forms/coffee-merge-form coffees) (:params req))]
-          (merge-coffees! (:coffee_id params) (:coffee_id coffee))
+          ;; XXX(miikka) The UI should not allow merging coffee with itself.
+          (when (not= (:coffee_id params) (:coffee_id coffee))
+            (merge-coffees! (:coffee_id params) (:coffee_id coffee)))
           (redirect req (coffee-url params)))
         (catch clojure.lang.ExceptionInfo ex
           (let [problems (:problems (ex-data ex))]
