@@ -202,9 +202,9 @@ Sovelluksen tietokannan rakennetta kuvaa relaatiotietokantakaavio
 
 \section{Järjestelmän yleisrakenne}
 
-Sovellus on tehty noudattaen MVC-mallia.
-Vaikka Clojure tukeekin olio-ohjelmointia, se ei kannusta siihen.
-Niinpä luokkien sijaan yhteen kokonaisuuteen kuuluvat funktiot on koottu nimiavaruuksiin.
+Sovellus on tehty noudattaen MVC-mallia.  Vaikka Clojure tukeekin
+olio-ohjelmointia, se ei kannusta siihen.  Niinpä luokkien sijaan
+yhteen kokonaisuuteen kuuluvat funktiot on koottu nimiavaruuksiin.
 MVC-malli ilmenee seuraavasti:
 
 \begin{itemize}
@@ -224,11 +224,25 @@ MVC-malli ilmenee seuraavasti:
       palauttavat Clojure-dataa.
 
     \item Kontrollerit on toteutettu
-      \texttt{kahvipaivakirja.core}-nimiavaruudessa. Monimutkaisempia
-      kontrollereja varten on omat funktionsa, yksinkertaisemmat
-      kontrollerit on sisällytetty suoraan
-      \texttt{defroutes}-reittitystauluun.
+      \texttt{kahvipaivakirja.controllers} nimiavaruuden
+      aliavaruuksissa. Kahveilla, paahtimoilla ja maisteluilla on omat
+      nimiavaruutensa. Kukin kontrolleri on funktio, joka ottaa
+      parametrikseen HTTP-pyynnön tiedot.
 \end{itemize}
+
+Nimiavaruus \texttt{kahvipaivakirja.core} toteuttaa reititystaulun,
+joka pyydetyn osoitteen perusteella kutsuu oikeaa kontrolleria.
+
+\begin{figure}[t]
+  \includegraphics[width=5cm]{starclicker.png}
+  \caption{starclicker-komponentilla voi antaa kahville 1-5 tähteä.}
+  \label{fig:starclicker}
+\end{figure}
+
+Käyttöliittymän toteutuksessa on hyödynnetty Bootstrap-kehystä ja
+jQuery-kirjastoa. Yksi JavaScriptilla toteutettu
+käyttöliittymäelementti löytyy: kahvien arvostelu tapahtuu
+valitsemalla tähtirivistöstä 1-5 tähteä (kts. kuva \ref{fig:starclicker}).
 
 
 \subsection{Kirjautuminen ja sessiot}
@@ -245,6 +259,24 @@ palvelimen muistiin. Käyttäjälle lähetetään
 tunnuksen. Sessioiden tallentamisen muistiin varjopuolena on se, että
 aina kun palvelin käynistetään uudestaan, esim. sovellusta
 päivittäessä, sessiomuisti tyhjennetään.
+
+
+\subsection{Hakemistorakenne}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{|X|X|}
+\hline
+\texttt{doc/} & dokumentaatio \\
+\texttt{resources/public/} & käytetyt JavaScript-, CSS- ja kuvatiedostot \\
+\texttt{src/sql/} & Tietokantakutsujen lähdekoodi \\
+\texttt{src/kahvipaivakirja/} & Clojure-lähdekoodi \\
+\texttt{src/kahvipaivakirja/core.clj} & Reititystaulu \\
+\texttt{src/kahvipaivakirja/controllers/} & Kontrollerien toteutukset \\
+\texttt{src/kahvipaivakirja/forms.clj} & Lomakkeiden käsittely \\
+\texttt{src/kahvipaivakirja/views.clj} & Näkymät \\
+\hline
+\end{tabularx}
+\end{center}
 
 
 \section{Käyttöliittymä}
