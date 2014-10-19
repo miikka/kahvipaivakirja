@@ -359,19 +359,20 @@
    [:div.row
     [:div.col-md-12 (render-form (forms/roastery-form) params problems)]]))
 
-(defn edit-roastery-page [ctx roastery problems]
+(defn edit-roastery-page [ctx roastery roasteries problems merge-data merge-problems]
   (base
    ctx :edit-roastery (str "Muokkaa paahtimoa " (:roastery_name roastery))
    [:div.page-header [:h2 "Muokkaa paahtimoa " (h (:roastery_name roastery))]]
    [:div.row
     [:div.col-md-12 (render-form (forms/roastery-form) roastery problems)]]
    [:div.row
-    [:div.col-md-12 [:h2 "Yhdistä toiseen paahtimoon"]]]
-   [:form {:role "form"}
-    [:div.row
-     [:div.col-md-12 (select "roastery-merge-roastery" "Valitse paahtimo"
-                             ["Drop Coffee" "Square Mile Coffee"])]]
-    [:div.row [:div.col-md-12 (submit-button "Yhdistä")]]]))
+    [:div.col-md-12
+     [:h2 "Yhdistä toiseen paahtimoon"]
+     [:p "Valitse paahtimo, johon tämän paahtimon tiedot yhdistetään. "
+      "Valitun paahtimon tiedot jäävät voimaan."]]]
+   [:div.row
+    [:div.col-md-12
+     (render-form (forms/roastery-merge-form roasteries) merge-data merge-problems)]]))
 
 ;;; README
 

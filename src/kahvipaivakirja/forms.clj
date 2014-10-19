@@ -89,3 +89,12 @@
    :renderer ::bootstrap3-horizontal
    :validations
    [[:required [:roastery_name] "kenttä ei saa olla tyhjä"]]})
+
+(defn roastery-merge-form
+  [roasteries]
+  (let [roastery-opts (map (juxt :roastery_id :roastery_name) roasteries)]
+    {:fields [{:name "roastery_id" :label "Kohdepaahtimo" :type :select :datatype :int
+               :options roastery-opts :placeholder "(valitse paahtimo)"}]
+     :submit-label "Yhdistä"
+     :renderer ::bootstrap3-horizontal
+     :action "../merge/"}))

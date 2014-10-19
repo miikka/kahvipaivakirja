@@ -65,8 +65,9 @@
   (GET "/roastery/:id/edit/" req (friend/authorize #{:admin} (roastery/edit req)))
 
   (POST "/roastery/create/" req (friend/authenticated (roastery/save-new req)))
-  (POST "/roastery/:id/edit/" req (friend/authorize #{:admin} (coffee/save-edit req)))
-  (POST "/roastery/:id/delete/" req (friend/authorize #{:adimn} (coffee/delete req)))
+  (POST "/roastery/:id/edit/" req (friend/authorize #{:admin} (roastery/save-edit req)))
+  (POST "/roastery/:id/delete/" req (friend/authorize #{:adimn} (roastery/delete req)))
+  (POST "/roastery/:id/merge/" req (friend/authorize #{:admin} (roastery/merge req)))
 
   ;; TASTING ROUTES
 

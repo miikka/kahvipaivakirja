@@ -12,6 +12,7 @@
 
   create-foo<! means that it returns the row it created."
   (:require
+   [clojure.java.jdbc :as jdbc]
    [yesql.core :refer [defquery]])
   (:import
    java.io.File))
@@ -34,6 +35,7 @@
 (defquery get-best-coffee-by-roastery-query "sql/get-best-coffee-by-roastery.sql")
 (defquery create-coffee-query<! "sql/create-coffee.sql")
 (defquery update-coffee-query! "sql/update-coffee.sql")
+(defquery update-coffee-roastery-query! "sql/update-coffee-roastery.sql")
 (defquery delete-coffee-query! "sql/delete-coffee.sql")
 
 (defn get-coffee-by-id [id] (first (get-coffee-by-id-query db-spec id)))
@@ -83,6 +85,11 @@
 
 (defn delete-roastery! [roastery-id]
   (delete-roastery-query! db-spec roastery-id))
+
+(defn merge-roasteries! [target-id source-id]
+  (jdbc/with-db-transaction [connection db-spec]
+    (update-coffee-roastery-query! connection target-id source-id)
+    (delete-roastery-query! connection source-id)))
 
 ;;; TASTING QUERIES
 
