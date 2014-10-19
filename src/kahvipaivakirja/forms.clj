@@ -3,6 +3,7 @@
   input. This namespace contains some formative extensions and descriptions of the forms."
   (:require
    [clojure.string :as string]
+   [hiccup.core :refer [h]]
    formative.render
    formative.util
    [formative.core :as f]))
@@ -55,7 +56,7 @@
 
 (defn ^:private format-coffee-opts
   [coffees]
-  (let [format-label (fn [coffee] (str (:roastery_name coffee) " / " (:coffee_name coffee)))]
+  (let [format-label (fn [coffee] (str (h (:roastery_name coffee)) " / " (h (:coffee_name coffee))))]
     (map (juxt :coffee_id format-label) coffees)))
 
 (defn tasting-form
@@ -77,7 +78,7 @@
 
 (defn coffee-form
   [roasteries]
-  (let [roastery-opts (map (juxt :roastery_id :roastery_name) roasteries)]
+  (let [roastery-opts (map (juxt :roastery_id (comp h :roastery_name)) roasteries)]
     {:fields [{:name "coffee_name", :label "Nimi", :type :text}
               {:name "roastery_id", :label "Paahtimo", :type :select, :datatype :int,
                :options roastery-opts, :placeholder "(valitse paahtimo)"}]
@@ -105,7 +106,7 @@
 
 (defn roastery-merge-form
   [roasteries]
-  (let [roastery-opts (map (juxt :roastery_id :roastery_name) roasteries)]
+  (let [roastery-opts (map (juxt :roastery_id (comp h :roastery_name)) roasteries)]
     {:fields [{:name "roastery_id" :label "Kohdepaahtimo" :type :select :datatype :int
                :options roastery-opts :placeholder "(valitse paahtimo)"}]
      :submit-label "Yhdistä"

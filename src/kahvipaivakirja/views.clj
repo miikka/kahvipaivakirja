@@ -185,7 +185,7 @@
    [:div.row
     [:div.col-md-12
      [:p
-      "Kahvia " (:coffee_name coffee) " " (format-count (:tasting_count coffee))
+      "Kahvia " (h (:coffee_name coffee)) " " (format-count (:tasting_count coffee))
       (when (pos? (:tasting_count coffee))
         (list "Ensimmäinen kerta "
               (format-date (:first_tasting coffee)) "."))]
@@ -220,7 +220,7 @@
    [:div.row
     [:div.col-md-12
      [:p
-      "Paahtimon " (:roastery_name roastery) " kahveja "
+      "Paahtimon " (h (:roastery_name roastery)) " kahveja "
       (format-count (:tasting_count roastery))
       (when (pos? (:tasting_count roastery))
         (list "Ensimmäinen kerta " (format-date (:first_tasting roastery)) "."))]
@@ -326,8 +326,8 @@
   (base
    ctx :edit-tasting "Muokkaa maistelua"
    [:div.page-header [:h2 (format "Maistelukokemus: %s (%s)"
-                                  (:coffee_name tasting)
-                                  (:roastery_name tasting))]]
+                                  (h (:coffee_name tasting))
+                                  (h (:roastery_name tasting)))]]
    [:div.row
     [:div.col-md-12 (render-form (forms/tasting-form coffees) tasting problems)]]))
 
