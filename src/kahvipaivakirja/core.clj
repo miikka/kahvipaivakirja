@@ -131,6 +131,16 @@
 
 ;;; THE RESOURCE WAY OF DOING THINGS
 
+(defn create-resource
+  [req resource]
+  (try
+    (let [params (parse-params (form-of resource) (:params req))]
+      (when-let [id (create resource params)]
+        (redirect req (format "/%d/" (:id id)))))
+    (catch clojure.lang.ExceptionInfo ex
+      (let [problems (:problems (ex-data ex))]
+        (render req (create-view resource) (:params req) problems)))))
+
 (defn update-resource
   [req resource]
   (when (exists? resource)
@@ -151,6 +161,8 @@
 (defn resource-route [getter]
   (let [g (fn [id] (getter (Integer/valueOf id)))]
     (routes
+     (GET "/create/" req (render req (create-view (getter -1)) {} {}))
+     (POST "/create/" req (create-resource req (getter -1)))
      (GET "/:id/edit/" [id :as req] (when-let [res (g id)] (render req (edit-view res) res {})))
      (POST "/:id/edit/" [id :as req] (update-resource req (g id)))
      (POST "/:id/delete/" [id :as req] (delete-resource req (g id))))))
@@ -179,12 +191,13 @@
         (friend/authenticated (delete-coffee req (Integer/valueOf id))))
 
   (GET "/roastery/" req (render req views/roastery-ranking-page (get-roasteries)))
+
+  (context "/roastery" [] (resource-route get-Roastery))
+
   (GET "/roastery/:id/" [id :as req]
        (let [roastery (get-roastery-by-id (Integer/valueOf id))
              coffees (get-coffees-by-roastery roastery)]
          (render req views/roastery-info-page roastery coffees)))
-
-  (context "/roastery" [] (resource-route get-Roastery))
 
   (GET "/tasting/" req
        (let [coffees (get-coffees)]

@@ -166,6 +166,9 @@
    [:div.page-header [:h2 "Lisää maistelu"]]
    [:div.row
     [:div.col-md-12
+     (link-button "/roastery/create/" "Lisää paahtimo") " "
+     (link-button "/coffee/create/" "Lisää kahvi")]
+    [:div.col-md-12
      (render-form (forms/tasting-form coffees) values problems)]]))
 
 (defn ^:private format-count
@@ -318,6 +321,13 @@
    [:div.row
     [:div.col-md-12 (render-form (forms/tasting-form coffees) tasting)]]))
 
+(defn add-coffee-page [ctx roasteries params problems]
+  (base
+   ctx :add-coffee (str "Lisää uusi kahvi")
+   [:div.page-header [:h2 "Lisää uusi kahvi"]]
+   [:div.row
+    [:div.col-md-12 (render-form (forms/coffee-form roasteries) params problems)]]))
+
 (defn edit-coffee-page [ctx coffee roasteries problems]
   (base
    ctx :edit-coffee (str "Muokkaa kahvia " (:coffee_name coffee))
@@ -331,6 +341,13 @@
      [:div.col-md-12 (select "coffee-merge-coffee" "Valitse kahvi"
                              ["Drop Coffee / Marimira" "Square Mile Coffee / Magdalena"])]]
     [:div.row [:div.col-md-12 (submit-button "Yhdistä")]]]))
+
+(defn add-roastery-page [ctx params problems]
+  (base
+   ctx :add-roastery "Lisää uusi paahtimo"
+   [:div.page-header [:h2 "Lisää paahtimo"]]
+   [:div.row
+    [:div.col-md-12 (render-form (forms/roastery-form) params problems)]]))
 
 (defn edit-roastery-page [ctx roastery problems]
   (base
