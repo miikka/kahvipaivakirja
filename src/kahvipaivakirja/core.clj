@@ -2,7 +2,6 @@
   (:use
    compojure.core
    kahvipaivakirja.model
-   kahvipaivakirja.resources
    kahvipaivakirja.util)
   (:require
    [cemerick.friend :as friend]
@@ -14,7 +13,8 @@
    [hiccup.middleware :refer [wrap-base-url]]
    [kahvipaivakirja.forms :as forms]
    [kahvipaivakirja.views :as views]
-   [kahvipaivakirja.controllers.coffee :as coffee]))
+   [kahvipaivakirja.controllers.coffee :as coffee]
+   [kahvipaivakirja.controllers.roastery :as roastery]))
 
 ;;; HELPERS
 
@@ -78,44 +78,6 @@
           (redirect req "/user/"))
         (friend/throw-unauthorized (friend/identity req) {})))))
 
-;;; THE RESOURCE WAY OF DOING THINGS
-
-(defn create-resource
-  [req resource]
-  (try
-    (let [params (parse-params (form-of resource) (:params req))]
-      (when-let [id (create resource params)]
-        (redirect req (format "/%d/" (:id id)))))
-    (catch clojure.lang.ExceptionInfo ex
-      (let [problems (:problems (ex-data ex))]
-        (render req (create-view resource) (:params req) problems)))))
-
-(defn update-resource
-  [req resource]
-  (when (exists? resource)
-    (try
-      (let [params (parse-params (form-of resource) (:params req))]
-        (update resource params)
-        (redirect req (format "/%d/" (id-of resource))))
-      (catch clojure.lang.ExceptionInfo ex
-        (let [problems (:problems (ex-data ex))]
-          (render req (edit-view resource) (:params req) problems))))))
-
-(defn delete-resource
-  [req resource]
-  (when (exists? resource)
-    (delete resource)
-    (redirect req "/")))
-
-(defn resource-route [getter]
-  (let [g (fn [id] (getter (Integer/valueOf id)))]
-    (routes
-     (GET "/create/" req (render req (create-view (getter -1)) {} {}))
-     (POST "/create/" req (create-resource req (getter -1)))
-     (GET "/:id/edit/" [id :as req] (when-let [res (g id)] (render req (edit-view res) res {})))
-     (POST "/:id/edit/" [id :as req] (update-resource req (g id)))
-     (POST "/:id/delete/" [id :as req] (delete-resource req (g id))))))
-
 ;;; ROUTES
 
 (defroutes main-routes
@@ -137,14 +99,16 @@
 
   ;; ROASTERY ROUTES
 
-  (GET "/roastery/" req (coffee/list req))
+  (GET "/roastery/" req (roastery/list req))
+  (GET "/roastery/create/" req (friend/authenticated (roastery/create req)))
+  (GET "/roastery/:id/" req (roastery/display req))
+  (GET "/roastery/:id/edit/" req (friend/authorize #{:admin} (roastery/edit req)))
 
-  (context "/roastery" [] (resource-route get-Roastery))
+  (POST "/roastery/create/" req (friend/authenticated (roastery/save-new req)))
+  (POST "/roastery/:id/edit/" req (friend/authorize #{:admin} (coffee/save-edit req)))
+  (POST "/roastery/:id/delete/" req (friend/authorize #{:adimn} (coffee/delete req)))
 
-  (GET "/roastery/:id/" [id :as req]
-       (let [roastery (get-roastery-by-id (Integer/valueOf id))
-             coffees (get-coffees-by-roastery roastery)]
-         (render req views/roastery-info-page roastery coffees)))
+  ;; TASTING ROUTES
 
   (GET "/tasting/" req
        (let [coffees (get-coffees)]

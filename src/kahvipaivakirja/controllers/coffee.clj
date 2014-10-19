@@ -1,5 +1,6 @@
 (ns kahvipaivakirja.controllers.coffee
   "Controllers for coffee CRUD operations."
+  (:refer-clojure :exclude [list])
   (:use
    kahvipaivakirja.model
    kahvipaivakirja.util)
@@ -16,7 +17,7 @@
     (format "/coffee/%d/" coffee_id)))
 
 (defn list [req]
-  (render req views/coffee-ranking-page (get-roasteries)))
+  (render req views/coffee-ranking-page (get-coffees)))
 
 (defn display [req]
   (when-let [coffee (get-coffee req)]
