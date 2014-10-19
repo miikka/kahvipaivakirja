@@ -85,6 +85,7 @@
   (GET "/logout/" req (friend/logout* (redirect req "/")))
 
   ;; MISC ROUTES
+
   (GET "/about" req (render req views/readme))
 
   (route/resources "/")
