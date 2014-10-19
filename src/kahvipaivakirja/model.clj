@@ -27,6 +27,8 @@
 
 (def db-spec (read-db-spec))
 
+(declare update-tasting-coffee-query!)
+
 ;;; COFFEE QUERIES
 
 (defquery get-coffee-by-id-query "sql/get-coffee-by-id.sql")
@@ -57,6 +59,11 @@
 
 (defn delete-coffee! [coffee-id]
   (delete-coffee-query! db-spec coffee-id))
+
+(defn merge-coffees! [target-id source-id]
+  (jdbc/with-db-transaction [connection db-spec]
+    (update-tasting-coffee-query! connection target-id source-id)
+    (delete-coffee-query! connection source-id)))
 
 ;;; ROASTERY QUERIES
 
@@ -98,6 +105,7 @@
 (defquery get-tasting-by-id-query "sql/get-tasting-by-id.sql")
 (defquery create-tasting-query<! "sql/create-tasting.sql")
 (defquery update-tasting-query! "sql/update-tasting.sql")
+(defquery update-tasting-coffee-query! "sql/update-tasting-coffee.sql")
 (defquery delete-tasting-query! "sql/delete-tasting.sql")
 
 (defn get-tastings-by-user [user]

@@ -53,10 +53,14 @@
 
 ;;; FORMS
 
+(defn ^:private format-coffee-opts
+  [coffees]
+  (let [format-label (fn [coffee] (str (:roastery_name coffee) " / " (:coffee_name coffee)))]
+    (map (juxt :coffee_id format-label) coffees)))
+
 (defn tasting-form
   [coffees]
-  (let [format-label (fn [coffee] (str (:roastery_name coffee) " / " (:coffee_name coffee)))
-        coffee-opts (map (juxt :coffee_id format-label) coffees)]
+  (let [coffee-opts (format-coffee-opts coffees)]
     {:fields [{:name "coffee_id", :label "Kahvi", :type :select, :datatype :int,
                :options coffee-opts, :placeholder "(valitse laatu)"}
               {:name "location", :label "Sijainti", :type :text}
@@ -81,6 +85,15 @@
      :renderer ::bootstrap3-horizontal
      :validations
      [[:required [:coffee_name :roastery_id] "kenttä ei saa olla tyhjä"]]}))
+
+(defn coffee-merge-form
+  [coffees]
+  (let [coffee-opts (format-coffee-opts coffees)]
+    {:fields [{:name "coffee_id" :label "Kohdekahvi" :type :select :datatype :int
+               :options coffee-opts :placeholder "(valitse kahvi)"}]
+     :submit-label "Yhdistä"
+     :renderer ::bootstrap3-horizontal
+     :action "../merge/"}))
 
 (defn roastery-form
   []

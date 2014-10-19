@@ -56,6 +56,7 @@
   (POST "/coffee/create/" req (friend/authenticated (coffee/save-new req)))
   (POST "/coffee/:id/edit/" req (friend/authorize #{:admin} (coffee/save-edit req)))
   (POST "/coffee/:id/delete/" req (friend/authorize #{:admin} (coffee/delete req)))
+  (POST "/coffee/:id/merge/" req (friend/authorize #{:admin} (coffee/merge req)))
 
   ;; ROASTERY ROUTES
 

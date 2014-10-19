@@ -1,6 +1,6 @@
 (ns kahvipaivakirja.controllers.coffee
   "Controllers for coffee CRUD operations."
-  (:refer-clojure :exclude [list])
+  (:refer-clojure :exclude [list merge])
   (:use
    kahvipaivakirja.model
    kahvipaivakirja.util)
@@ -26,19 +26,22 @@
 
 (defn edit [req]
   (when-let [coffee (get-coffee req)]
-    (let [roasteries (get-roasteries)]
-      (render req views/edit-coffee-page coffee roasteries {}))))
+    (let [coffees (get-coffees)
+          roasteries (get-roasteries)]
+      (render req views/edit-coffee-page coffee coffees roasteries {} {} []))))
 
 (defn save-edit [req]
   (when-let [coffee (get-coffee req)]
-    (let [roasteries (get-roasteries)]
+    (let [coffees (get-coffees)
+          roasteries (get-roasteries)]
       (try
         (let [params (parse-params (forms/coffee-form roasteries) (:params req))]
           (update-coffee! (:coffee_id coffee) params)
           (redirect req (coffee-url coffee)))
         (catch clojure.lang.ExceptionInfo ex
           (let [problems (:problems (ex-data ex))]
-            (render req views/edit-coffee-page (:params req) roasteries problems)))))))
+            (render req views/edit-coffee-page
+                    (:params req) coffees roasteries problems {} [])))))))
 
 (defn create [req]
   (render req views/add-coffee-page (:params req) (get-roasteries) {}))
@@ -57,3 +60,16 @@
   (when-let [coffee (get-coffee req)]
     (delete-coffee! (:coffee_id coffee))
     (redirect req "/coffee/")))
+
+(defn merge [req]
+  (when-let [coffee (get-coffee req)]
+    (let [coffees (get-coffees)
+          roasteries (get-roasteries)]
+      (try
+        (let [params (parse-params (forms/coffee-merge-form coffees) (:params req))]
+          (merge-coffees! (:coffee_id params) (:coffee_id coffee))
+          (redirect req (coffee-url params)))
+        (catch clojure.lang.ExceptionInfo ex
+          (let [problems (:problems (ex-data ex))]
+            (render req views/edit-coffee-page
+                    coffee roasteries coffees [] (:params req) problems)))))))

@@ -338,19 +338,19 @@
    [:div.row
     [:div.col-md-12 (render-form (forms/coffee-form roasteries) params problems)]]))
 
-(defn edit-coffee-page [ctx coffee roasteries problems]
+(defn edit-coffee-page [ctx coffee coffees roasteries problems merge-data merge-problems]
   (base
    ctx :edit-coffee (str "Muokkaa kahvia " (:coffee_name coffee))
    [:div.page-header [:h2 "Muokkaa kahvia " (h (:coffee_name coffee))]]
    [:div.row
     [:div.col-md-12 (render-form (forms/coffee-form roasteries) coffee problems)]]
    [:div.row
-    [:div.col-md-12 [:h2 "Yhdistä toiseen kahviin"]]]
-   [:form {:role "form"}
-    [:div.row
-     [:div.col-md-12 (select "coffee-merge-coffee" "Valitse kahvi"
-                             ["Drop Coffee / Marimira" "Square Mile Coffee / Magdalena"])]]
-    [:div.row [:div.col-md-12 (submit-button "Yhdistä")]]]))
+    [:div.col-md-12 [:h2 "Yhdistä toiseen kahviin"]
+     [:p "Valitse kahvi, johon tämän kahvin tiedot yhdistetään. "
+      "Valitun kahvin tiedot jäävät voimaan."]]]
+   [:div.row
+    [:div.col-md-12
+     (render-form (forms/coffee-merge-form coffees) merge-data merge-problems)]]))
 
 (defn add-roastery-page [ctx params problems]
   (base
