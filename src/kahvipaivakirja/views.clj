@@ -290,15 +290,12 @@
   (base
    ctx :profile "Käyttäjäsivu"
    [:div.page-header [:h2 "Käyttäjä: " (:username ctx)]]
-   [:div.row
-    [:div.col-md-12 [:h3 "Omat suosikit"]]]
-   (comment [:div.row
-             [:div.col-md-12
-              [:ol
-               [:li "Heart Coffee: Kenya Miiri"]
-               [:li "Drop Coffee: Marimira"]]]])
+
    [:div.row
     [:div.col-md-12 [:h3 "Maisteluhistoria"]]]
+   [:div.row
+    [:div.col-md-12
+     [:p (link-button "/tasting/" "Lisää maistelu")]]]
    [:div.row
     [:div.col-md-12
      [:table.table.table-hover
