@@ -9,35 +9,15 @@ held in Finnish, all the documentation is in Finnish, too.
 
 * Työn repositorio: https://github.com/miikka/kahvipaivakirja
 * Työn dokumentaatio: [doc/dokumentaatio.pdf][docs]
+* Testi-instanssi: http://t-miikoski.users.cs.helsinki.fi/kahvipaivakirja/
 * ConnectionTest: http://t-miikoski.users.cs.helsinki.fi/ConnectionTest/
-* Listaustesti: http://t-miikoski.users.cs.helsinki.fi/kahvipaivakirja/coffee/ (Tietojen haku tietokannasta on toteutettu tällä hetkellä vain tälle sivulle. Muut sivut on kovakoodattu.)
-* Kirjautumissivu: http://t-miikoski.users.cs.helsinki.fi/kahvipaivakirja/login/
 
-## Toteutetut tietokohteet
-
-Tällä hetkellä listaus-, lisäys-, muokkaus- ja poistotoiminnot on
-toteutettu maisteluille. Maistelulistaus näkyy käyttäjän omalla
-sivulla kirjautumisen jälkeen.
+[docs]: https://github.com/miikka/kahvipaivakirja/blob/master/doc/dokumentaatio.pdf?raw=true
 
 ## Käyttäjätunnukset ja salasanat
 
 * Tavallinen käyttäjä: `Testaaja`/`kofeiini`
 * Ylläpitäjä: `Yllapitaja`/`kofeiini`
-
-### HTML-demosivut
-
-* [Etusivu](http://t-miikoski.users.cs.helsinki.fi/kahvipaivakirja/)
-* [Kahvilistaus](http://t-miikoski.users.cs.helsinki.fi/kahvipaivakirja/coffee/)
-* [Paahtimolistaus](http://t-miikoski.users.cs.helsinki.fi/kahvipaivakirja/roastery/)
-* [Käyttäjän maisteluhistoria](http://t-miikoski.users.cs.helsinki.fi/kahvipaivakirja/user/)
-* [Kahvin tiedot](http://t-miikoski.users.cs.helsinki.fi/kahvipaivakirja/coffee/1/)
-* [Paahtimon tiedot](http://t-miikoski.users.cs.helsinki.fi/kahvipaivakirja/roastery/1/)
-* [Kahvin muokkaus](http://t-miikoski.users.cs.helsinki.fi/coffee/1/edit/)
-* [Paahtimon muokkaus](http://t-miikoski.users.cs.helsinki.fi/kahvipaivakirja/roastery/1/edit/)
-* [Maistelun lisäys](http://t-miikoski.users.cs.helsinki.fi/kahvipaivakirja/coffee/1/edit/)
-
-[docs]: https://github.com/miikka/kahvipaivakirja/blob/master/doc/dokumentaatio.pdf?raw=true
-
 
 ## Työn aihe
 
@@ -63,7 +43,6 @@ Ylläpitotoimintoihin kuuluu:
 
 * Käyttäjien hallinointi
 * Kahvilaatujen ja paahtimoiden tietojen muokkaaminen ja yhdistely
-
 
 ## Ohjeita sovelluskehitykseen
 
