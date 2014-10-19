@@ -13,8 +13,7 @@
    [hiccup.page :refer [html5 include-css include-js]]
    [hiccup.util :refer [to-uri]]
    [kahvipaivakirja.forms :as forms]
-   [kahvipaivakirja.views.helpers :refer [format-date]]
-   [kahivpaivakirja.controllers.coffee :as coffee]))
+   [kahvipaivakirja.views.helpers :refer [format-date]]))
 
 (defn ^:private include-bootstrap []
   (list (include-css "/bootstrap/css/bootstrap.css"
@@ -220,8 +219,12 @@
       (format-count (:tasting_count roastery))
       (when (pos? (:tasting_count roastery))
         (list "Ensimmäinen kerta " (format-date (:first_tasting roastery)) "."))]
+     (when (:user ctx)
+       (link-button (format "/coffee/create/?roastery_id=%d" (:roastery_id roastery))
+                    "Lisää kahvi"))
      (when (:admin ctx)
-       (list (link-button (format "/roastery/%d/edit/" (:roastery_id roastery)) "Muokkaa") " "
+       (list " "
+             (link-button (format "/roastery/%d/edit/" (:roastery_id roastery)) "Muokkaa") " "
              (delete-button {:id (:roastery_id roastery)} "roastery")))]]
    [:div.row
     [:div.col-md-12
@@ -245,6 +248,8 @@
   (base
    ctx :coffee-ranking "Parhaat kahvit"
    [:div.page-header [:h2 "Parhaat kahvit"]]
+   (when (:user ctx)
+     [:div.col-md-12 [:p (link-button "/coffee/create/" "Lisää kahvi")]])
    [:table.table.table-hover
     [:tr
      [:th "Kahvi"]
@@ -264,6 +269,8 @@
   (base
    ctx :roastery-ranking "Parhaat paahtimot"
    [:div.page-header [:h2 "Parhaat paahtimot"]]
+   (when (:user ctx)
+     [:div.col-md-12 [:p (link-button "/roastery/create/" "Lisää paahtimo")]])
    [:table.table.table-hover
     [:tr
      [:th "Paahtimo"]

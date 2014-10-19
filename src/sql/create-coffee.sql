@@ -1,1 +1,1 @@
-INSERT INTO coffees (name, roastery_id) VALUES (:name, :roastery_id)
+INSERT INTO coffees (name, roastery_id) VALUES (:coffee_name, :roastery_id)

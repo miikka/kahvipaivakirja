@@ -41,13 +41,13 @@
             (render req views/edit-coffee-page (:params req) roasteries problems)))))))
 
 (defn create [req]
-  (render req views/add-coffee-page {} (get-roasteries) {}))
+  (render req views/add-coffee-page (:params req) (get-roasteries) {}))
 
 (defn save-new [req]
   (let [roasteries (get-roasteries)]
     (try
       (let [params (parse-params (forms/coffee-form roasteries) (:params req))]
-        (let [coffee (create-coffee params)]
+        (let [coffee (create-coffee<! params)]
           (redirect req (coffee-url coffee))))
       (catch clojure.lang.ExceptionInfo ex
         (let [problems (:problems (ex-data ex))]

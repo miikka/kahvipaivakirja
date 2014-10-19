@@ -64,9 +64,9 @@
                           coffee_id
                           user_id))
 
-(defn create-coffee [{:keys [name roastery_id]}]
+(defn create-coffee<! [{:keys [coffee_name roastery_id]}]
   (create-coffee-query<! db-spec
-                         name
+                         coffee_name
                          roastery_id))
 
 (defn update-tasting [id {:keys [type location rating notes coffee_id]}]
