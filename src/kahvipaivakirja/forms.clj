@@ -68,7 +68,8 @@
      :submit-label "Tallenna"
      :renderer ::bootstrap3-horizontal
      :validations
-     [[:required [:coffee_id :rating] "kenttä ei saa olla tyhjä"]]}))
+     [[:required [:coffee_id :rating] "kenttä ei saa olla tyhjä"]
+      [:within 1 5 [:rating] "arvosanan on oltava välillä 1-5"]]}))
 
 (defn coffee-form
   [roasteries]

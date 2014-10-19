@@ -59,7 +59,7 @@
        [:ul.nav.navbar-nav.navbar-right
         (if (:user ctx)
           (list
-           [:li (active? :new-tasting page) (link-to "/tasting/" "Lisää maistelu")]
+           [:li (active? :add-tasting page) (link-to "/tasting/create/" "Lisää maistelu")]
            [:li (active? :profile page) (link-to "/user/" "Oma sivu")]
            [:li (link-to "/logout/" "Kirjaudu ulos")])
           [:li (link-to "/login/" "Kirjaudu sisään")])]]]]
@@ -160,16 +160,17 @@
           :style "display: inline;"}
    [:button {:type "submit" :class "btn btn-danger btn-xs"} "Poista"]])
 
-(defn new-tasting-page [ctx coffees values problems]
+(defn add-tasting-page [ctx params coffees problems]
   (base
-   ctx :new-tasting "Lisää maistelu"
+   ctx :add-tasting "Lisää maistelu"
    [:div.page-header [:h2 "Lisää maistelu"]]
    [:div.row
     [:div.col-md-12
-     (link-button "/roastery/create/" "Lisää paahtimo") " "
-     (link-button "/coffee/create/" "Lisää kahvi")]
+     [:p
+      (link-button "/roastery/create/" "Lisää paahtimo") " "
+      (link-button "/coffee/create/" "Lisää kahvi")]]
     [:div.col-md-12
-     (render-form (forms/tasting-form coffees) values problems)]]))
+     (render-form (forms/tasting-form coffees) params problems)]]))
 
 (defn ^:private format-count
   [n]
@@ -180,7 +181,6 @@
   (base
    ctx :coffee-info (str (:roastery_name coffee) ": " (:coffee_name coffee))
    [:div.page-header [:h1 (list (roastery-link coffee) ": " (h (:coffee_name coffee)))]]
-
    [:div.row
     [:div.col-md-12
      [:p
@@ -188,8 +188,12 @@
       (when (pos? (:tasting_count coffee))
         (list "Ensimmäinen kerta "
               (format-date (:first_tasting coffee)) "."))]
+     (when (:user ctx)
+       (link-button (format "/tasting/create/?coffee_id=%d" (:coffee_id coffee))
+                    "Lisää maistelu"))
      (when (:admin ctx)
-       (list (link-button (format "/coffee/%d/edit/" (:coffee_id coffee)) "Muokkaa") " "
+       (list " "
+             (link-button (format "/coffee/%d/edit/" (:coffee_id coffee)) "Muokkaa") " "
              (delete-button {:id (:coffee_id coffee)} "coffee")))]]
    [:div.row
     [:div.col-md-12
@@ -295,7 +299,7 @@
     [:div.col-md-12 [:h3 "Maisteluhistoria"]]]
    [:div.row
     [:div.col-md-12
-     [:p (link-button "/tasting/" "Lisää maistelu")]]]
+     [:p (link-button "/tasting/create/" "Lisää maistelu")]]]
    [:div.row
     [:div.col-md-12
      [:table.table.table-hover
@@ -317,14 +321,14 @@
                        (str "/tasting/" (:id tasting) "/edit/") "Muokkaa")
           " " (delete-button tasting)]])]]]))
 
-(defn edit-tasting-page [ctx coffees tasting]
+(defn edit-tasting-page [ctx tasting coffees problems]
   (base
    ctx :edit-tasting "Muokkaa maistelua"
    [:div.page-header [:h2 (format "Maistelukokemus: %s (%s)"
                                   (:coffee_name tasting)
                                   (:roastery_name tasting))]]
    [:div.row
-    [:div.col-md-12 (render-form (forms/tasting-form coffees) tasting)]]))
+    [:div.col-md-12 (render-form (forms/tasting-form coffees) tasting problems)]]))
 
 (defn add-coffee-page [ctx params roasteries problems]
   (base

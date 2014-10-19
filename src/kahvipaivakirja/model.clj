@@ -55,7 +55,7 @@
 (defn get-roastery-by-id [id]
   (first (get-roastery-by-id-query db-spec id)))
 
-(defn create-tasting [{:keys [type location rating notes coffee_id user_id]}]
+(defn create-tasting<! [{:keys [type location rating notes coffee_id user_id]}]
   (create-tasting-query<! db-spec
                           type
                           location
@@ -69,7 +69,7 @@
                          coffee_name
                          roastery_id))
 
-(defn update-tasting [id {:keys [type location rating notes coffee_id]}]
+(defn update-tasting! [id {:keys [type location rating notes coffee_id]}]
   (update-tasting-query! db-spec
                          type
                          location
