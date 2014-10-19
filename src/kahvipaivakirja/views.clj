@@ -2,7 +2,8 @@
   "Hiccup views for Kahvipäiväkirja.
 
   The views are Clojure functions that return an HTML string. They all
-  take a context map as the first parameter. (See kahvipaivakirja.core/make-context.)"
+  take a context map as the first parameter. (See
+  kahvipaivakirja.util/make-context.)"
   (:require
    [clojure.java.io :as io]
    [clojure.pprint :refer [cl-format]]
