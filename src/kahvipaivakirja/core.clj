@@ -2,7 +2,8 @@
   (:use
    compojure.core
    kahvipaivakirja.model
-   kahvipaivakirja.resources)
+   kahvipaivakirja.resources
+   kahvipaivakirja.util)
   (:require
    [cemerick.friend :as friend]
    [cemerick.friend.credentials :as creds]
@@ -13,35 +14,16 @@
    [hiccup.middleware :refer [wrap-base-url]]
    [kahvipaivakirja.forms :as forms]
    [kahvipaivakirja.views :as views]
-   [ring.util.response :as response]))
+   [kahvipaivakirja.controllers.coffee :as coffee]))
 
 ;;; HELPERS
 
 (defn current-user [req] (friend/current-authentication req))
 
-(defn make-context
-  "Return a map of contextual information to be used by the views."
-  [req]
-  (let [user (friend/current-authentication req)]
-   {:user user
-    :username (:username user)
-    :admin (:admin user)}))
-
 (defn authenticated?
   "Returns true if the user has been authenticated."
   [req]
   (not (nil? (friend/current-authentication req))))
-
-(defn redirect
-  "Redirect to the given relative path."
-  [req path]
-  (response/redirect (str (:context req) path)))
-
-(defn render
-  "Render the given view with the context derived from the given request."
-  [req view & args]
-  (let [ctx (make-context req)]
-    (apply view ctx args)))
 
 ;;; CONTROLLERS
 
@@ -96,39 +78,6 @@
           (redirect req "/user/"))
         (friend/throw-unauthorized (friend/identity req) {})))))
 
-(defn save-coffee
-  [req]
-  (let [roasteries (get-roasteries)]
-   (try
-     (let [params (assoc (parse-params (forms/coffee-form roasteries) (:params req)))]
-       (create-coffee params)
-       (redirect req "/coffee/"))
-     (catch clojure.lang.ExceptionInfo ex
-       (let [problems (:problems (ex-data ex))]
-         (pr-str problems))))))
-
-(defn update-coffee-
-  [req coffee-id]
-  ;; XXX(miikka) Should check if admin
-  (let [roasteries (get-roasteries)
-        coffee (get-coffee-by-id coffee-id)]
-    (when coffee
-      (try
-        (let [params (parse-params (forms/coffee-form roasteries) (:params req))]
-          (update-coffee! coffee-id params)
-          (redirect req (format "/coffee/%d/" coffee-id)))
-        (catch clojure.lang.ExceptionInfo ex
-          (let [problems (:problems (ex-data ex))]
-            (render req views/edit-coffee-page (:params req) roasteries problems)))))))
-
-(defn delete-coffee
-  [req coffee-id]
-  ;; XXX(miikka) Should check if admin
-  (let [coffee (get-coffee-by-id coffee-id)]
-    (when coffee
-      (delete-coffee! coffee-id)
-      (redirect req "/coffee/"))))
-
 ;;; THE RESOURCE WAY OF DOING THINGS
 
 (defn create-resource
@@ -174,23 +123,21 @@
        (let [roasteries (take 3 (get-roasteries))
              coffees (take 3 (get-coffees))]
          (render req views/front-page roasteries coffees)))
-  (GET "/coffee/" req (render req views/coffee-ranking-page (get-coffees)))
-  (GET "/coffee/:id/" [id :as req]
-       (let [coffee (get-coffee-by-id (Integer/valueOf id))
-             tastings (get-tastings-by-coffee coffee)]
-        (render req views/coffee-info-page coffee tastings)))
-  (GET "/coffee/:id/edit/" [id :as req]
-       (let [coffee (get-coffee-by-id (Integer/valueOf id))
-             roasteries (get-roasteries)]
-         (when coffee
-           (friend/authorize #{:admin} (render req views/edit-coffee-page coffee roasteries {})))))
-  (POST "/coffee/" req (friend/authenticated (save-coffee req)))
-  (POST "/coffee/:id/edit/" [id :as req]
-        (friend/authenticated (update-coffee- req (Integer/valueOf id))))
-  (POST "/coffee/:id/delete/" [id :as req]
-        (friend/authenticated (delete-coffee req (Integer/valueOf id))))
 
-  (GET "/roastery/" req (render req views/roastery-ranking-page (get-roasteries)))
+  ;; COFFEE ROUTES
+
+  (GET "/coffee/" req (coffee/list req))
+  (GET "/coffee/create/" req (friend/authenticated (coffee/create req)))
+  (GET "/coffee/:id/" req (coffee/display req))
+  (GET "/coffee/:id/edit/" req (friend/authorize #{:admin} (coffee/edit req)))
+
+  (POST "/coffee/create/" req (friend/authenticated (coffee/save-new req)))
+  (POST "/coffee/:id/edit/" req (friend/authorize #{:admin} (coffee/save-edit req)))
+  (POST "/coffee/:id/delete/" req (friend/authorize #{:admin} (coffee/delete req)))
+
+  ;; ROASTERY ROUTES
+
+  (GET "/roastery/" req (coffee/list req))
 
   (context "/roastery" [] (resource-route get-Roastery))
 

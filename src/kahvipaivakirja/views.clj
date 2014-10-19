@@ -13,7 +13,8 @@
    [hiccup.page :refer [html5 include-css include-js]]
    [hiccup.util :refer [to-uri]]
    [kahvipaivakirja.forms :as forms]
-   [kahvipaivakirja.views.helpers :refer [format-date]]))
+   [kahvipaivakirja.views.helpers :refer [format-date]]
+   [kahivpaivakirja.controllers.coffee :as coffee]))
 
 (defn ^:private include-bootstrap []
   (list (include-css "/bootstrap/css/bootstrap.css"
@@ -321,7 +322,7 @@
    [:div.row
     [:div.col-md-12 (render-form (forms/tasting-form coffees) tasting)]]))
 
-(defn add-coffee-page [ctx roasteries params problems]
+(defn add-coffee-page [ctx params roasteries problems]
   (base
    ctx :add-coffee (str "Lisää uusi kahvi")
    [:div.page-header [:h2 "Lisää uusi kahvi"]]
