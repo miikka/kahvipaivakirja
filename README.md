@@ -1,16 +1,18 @@
 # Kahvipäiväkirja
 
 *English summary:* Kahvipäiväkirja is a coffee tasting diary web app. You can
-use it to make notes on the coffees you've tasted. I'm working on it for the
-University of Helsinki course on database applications. Since the course is
-held in Finnish, all the documentation is in Finnish, too.
+use it to make notes on the coffees you've tasted. I made it for the University
+of Helsinki course on database applications. Since the course is held in
+Finnish, all the documentation is in Finnish, too.
 
 ## Yleisiä linkkejä
 
 * Työn repositorio: https://github.com/miikka/kahvipaivakirja
 * Työn dokumentaatio: [doc/dokumentaatio.pdf][docs]
-* Testi-instanssi: http://t-miikoski.users.cs.helsinki.fi/kahvipaivakirja/
-* ConnectionTest: http://t-miikoski.users.cs.helsinki.fi/ConnectionTest/
+
+Testi-instanssi users.cs.helsinki.fi-palvelimella ei ole enää toiminnassa,
+sillä kurssi on ohi. Ohjeet sovelluksen ajamiseen paikallisesti löytyvät
+alempana tästä tiedostosta.
 
 [docs]: https://github.com/miikka/kahvipaivakirja/blob/master/doc/dokumentaatio.pdf?raw=true
 
